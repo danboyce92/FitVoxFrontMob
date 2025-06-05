@@ -8,9 +8,13 @@ registerTranslation("en-IE", enGB);
 
 const RootLayout = () => {
   return (
-    <Stack>
+    <Stack
+        screenOptions={{
+        headerTitle: "Home",
+        }}
+    />
 
-    </Stack>
+
   );
 };
 

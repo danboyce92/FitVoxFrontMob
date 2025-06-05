@@ -1,24 +1,32 @@
-import { StyleSheet, Text, View } from "react-native";
+import { View, Button, StyleSheet } from "react-native";
 import { useRouter } from "expo-router";
 
-
-const App = () => {
+export default function Home() {
   const router = useRouter();
 
   return (
     <View style={styles.container}>
-      <Text>Home Page</Text>
+      <Button
+        title="Template Builder"
+        onPress={() => router.push("/TemplateBuilder")}
+      />
+      <Button
+        title="Record Workout"
+        onPress={() => router.push("/RecordWorkout")}
+      />
+      <Button
+        title="Your Progress"
+        onPress={() => router.push("/YourProgress")}
+      />
     </View>
   );
-};
-
-export default App;
+}
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: "center",
     flex: 1,
-    gap: 40,
     justifyContent: "center",
+    gap: 20,
+    paddingHorizontal: 40,
   },
 });
