@@ -1,20 +1,24 @@
 import { StyleSheet, Text, View } from "react-native";
-import { StatusBar } from "expo-status-bar";
+import { useRouter } from "expo-router";
 
-export default function App() {
+
+const App = () => {
+  const router = useRouter();
+
   return (
     <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <Text>Home Page</Text>
     </View>
   );
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: "#fff",
     alignItems: "center",
+    flex: 1,
+    gap: 40,
     justifyContent: "center",
   },
 });
