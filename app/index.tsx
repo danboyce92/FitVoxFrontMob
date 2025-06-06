@@ -1,4 +1,4 @@
-import { View, Button, StyleSheet } from "react-native";
+import { Button, StyleSheet, View } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function Home() {
@@ -6,18 +6,9 @@ export default function Home() {
 
   return (
     <View style={styles.container}>
-      <Button
-        title="Template Builder"
-        onPress={() => router.push("/TemplateBuilder")}
-      />
-      <Button
-        title="Record Workout"
-        onPress={() => router.push("/RecordWorkout")}
-      />
-      <Button
-        title="Your Progress"
-        onPress={() => router.push("/YourProgress")}
-      />
+      <Button title="Template Builder" onPress={() => router.push("/TemplateBuilder")} />
+      <Button title="Record Workout" onPress={() => router.push("/RecordWorkout")} />
+      <Button title="Your Progress" onPress={() => router.push("/YourProgress")} />
     </View>
   );
 }
