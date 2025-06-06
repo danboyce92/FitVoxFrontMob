@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,14 +19,30 @@ export default function Workout() {
       <Text style={styles.title}>{parsedPlan.name}</Text>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        {exercises.map((exercise) => (
-          <View key={exercise.id} style={styles.exerciseItem}>
-            <Text style={styles.exerciseName}>{exercise.name}</Text>
-            <Text style={styles.exerciseDetails}>
-              {exercise.sets} sets x {exercise.reps} reps
-            </Text>
-          </View>
-        ))}
+        <View>
+        <Pressable style={({ hovered }) => [styles.exerciseItem, hovered && styles.itemHovered]}>
+            <Text style={styles.exerciseName}>Add exercise +</Text>
+        </Pressable>
+        </View>
+{exercises.map((exercise) => (
+  <View key={exercise.id} style={styles.exerciseItemRow}>
+    <View style={styles.exerciseTextContainer}>
+      <Text style={styles.exerciseName}>{exercise.name}</Text>
+      <Text style={styles.exerciseDetails}>
+        {exercise.sets} sets x {exercise.reps} reps
+      </Text>
+    </View>
+<Pressable
+  onPress={() => console.log("Delete", exercise.id)}
+  style={({ hovered }) => [
+    styles.deleteButton,
+    hovered && styles.deleteButtonHovered,
+  ]}
+>
+  <Text style={styles.deleteButtonText}>X</Text>
+</Pressable>
+  </View>
+))}
       </ScrollView>
 
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
@@ -76,4 +92,37 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
+    itemHovered: {
+    backgroundColor: "#b0e0a0", // lighter green or whatever hover color you want
+  },
+  exerciseItemRow: {
+  flexDirection: "row",
+  alignItems: "center",
+  justifyContent: "space-between",
+  backgroundColor: "#f2f2f2",
+  padding: 16,
+  marginBottom: 12,
+  borderRadius: 10,
+},
+
+exerciseTextContainer: {
+  flex: 1,
+  paddingRight: 10,
+},
+
+deleteButton: {
+  backgroundColor: "#ffdddd",
+  paddingHorizontal: 12,
+  paddingVertical: 6,
+  borderRadius: 8,
+},
+
+deleteButtonText: {
+  fontSize: 16,
+  fontWeight: "bold",
+  color: "#b00000",
+},
+deleteButtonHovered: {
+  backgroundColor: "#ffbbbb", // brighter red on hover
+},
 });
