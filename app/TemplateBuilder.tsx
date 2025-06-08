@@ -1,37 +1,31 @@
-import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+// import { workoutPlans } from "@/dummyData";
+import { useEffect, useState } from "react";
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
+import { getAllWorkoutPlans, getWorkoutPlan } from "./api";
 
-import { WorkoutPlan } from "@/types/types";
+import useAppStore from "@/store/useAppStore";
+import { Exercise, WorkoutPlan } from "@/types/types";
+import DeleteModal from "@/components/DeleteModal";
 
 export default function TemplateBuilder() {
   const router = useRouter();
+  const { setWorkoutPlans, workoutPlans } = useAppStore();
 
-  const workoutPlans: WorkoutPlan[] = [
-    {
-      id: "1",
-      name: "Push Day",
-      exercises: [
-        { id: "1", name: "Bench Press", sets: 4, reps: 10 },
-        { id: "2", name: "Push-ups", sets: 3, reps: 15 },
-      ],
-    },
-    {
-      id: "2",
-      name: "Leg Day",
-      exercises: [
-        { id: "1", name: "Squats", sets: 4, reps: 12 },
-        { id: "2", name: "Lunges", sets: 3, reps: 10 },
-      ],
-    },
-    {
-      id: "3",
-      name: "Pull Day",
-      exercises: [
-        { id: "1", name: "Pull-ups", sets: 4, reps: 8 },
-        { id: "2", name: "Barbell Row", sets: 3, reps: 10 },
-      ],
-    },
-  ];
+  const [visible, setVisible] = useState(false);
+  const [selectedWorkout, setSelectedWorkout] = useState<WorkoutPlan | null>(null);
+
+  useEffect(() => {
+    const fetchWorkoutPlans = async () => {
+      try {
+        const plans = await getAllWorkoutPlans();
+        setWorkoutPlans(plans);
+      } catch (error) {
+        console.error("Error fetching health record:", error);
+      }
+    };
+    fetchWorkoutPlans();
+  }, []);
 
   const handlePress = (item: WorkoutPlan) => {
     router.push({
@@ -63,13 +57,30 @@ export default function TemplateBuilder() {
         {workoutPlans.map((item) => (
           <Pressable
             key={item.id}
-            style={({ hovered }) => [styles.item, hovered && styles.itemHovered]}
             onPress={() => handlePress(item)}
+            style={({ hovered }) => [
+              styles.itemRow,
+              hovered && styles.itemHovered, // apply hover style to the whole row
+            ]}
           >
-            <Text style={styles.itemText}>{item.name}</Text>
+            <View style={styles.itemTextContainer}>
+              <Text style={styles.itemText}>{item.name}</Text>
+            </View>
+
+            <Pressable
+              onPress={() => {
+                setSelectedWorkout(item);
+                setVisible(true);
+              }}
+              style={({ hovered }) => [styles.deleteButton, hovered && styles.deleteButtonHovered]}
+            >
+              <Text style={styles.deleteButtonText}>X</Text>
+            </Pressable>
           </Pressable>
+
         ))}
       </ScrollView>
+      <DeleteModal visibility={visible} setVisible={setVisible} workout={selectedWorkout} />
     </View>
   );
 }
@@ -87,6 +98,42 @@ const styles = StyleSheet.create({
   itemText: { fontSize: 16, fontWeight: "600" },
   addButton: { backgroundColor: "#d0f0d0" },
   itemHovered: {
-    backgroundColor: "#b0e0a0", // lighter green or whatever hover color you want
+    backgroundColor: "#d0f0d0", // or whatever hover color you like
+  },
+  deleteButton: {
+    backgroundColor: "#ffdddd",
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 8,
+    marginRight: 10, // ← this adds space from the right edge
+  },
+
+  deleteButtonText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#b00000",
+  },
+  deleteButtonHovered: {
+    backgroundColor: "#ffbbbb", // brighter red on hover
+  },
+  itemRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-around",
+    backgroundColor: "#f0f0f0",
+    marginHorizontal: 20,
+    marginBottom: 10,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+
+  itemContent: {
+    flex: 1,
+    padding: 20,
+  },
+
+  itemTextContainer: {
+    flex: 1,
+    padding: 20,
   },
 });

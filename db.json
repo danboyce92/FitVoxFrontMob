@@ -1,0 +1,36 @@
+{
+  "workout-plans": [
+    {
+      "id": "1",
+      "name": "Push Day",
+      "exercises": [
+        {
+          "id": "1",
+          "name": "Bench Press",
+          "category": "Chest"
+        },
+        {
+          "id": "2",
+          "name": "Push-ups",
+          "category": "Chest"
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "name": "Leg Day",
+      "exercises": [
+        {
+          "id": "1",
+          "name": "Squats",
+          "category": "Legs"
+        },
+        {
+          "id": "2",
+          "name": "Lunges",
+          "category": "Legs"
+        }
+      ]
+    }
+  ]
+}
