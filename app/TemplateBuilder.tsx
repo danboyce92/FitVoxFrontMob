@@ -2,15 +2,15 @@
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
-import { getAllWorkoutPlans, getWorkoutPlan } from "./api";
+import { getAllWorkoutPlans } from "./api";
 
-import useAppStore from "@/store/useAppStore";
-import { Exercise, WorkoutPlan } from "@/types/types";
 import DeleteModal from "@/components/DeleteModal";
+import useAppStore from "@/store/useAppStore";
+import { WorkoutPlan } from "@/types/types";
 
 export default function TemplateBuilder() {
   const router = useRouter();
-  const { setWorkoutPlans, workoutPlans } = useAppStore();
+  const { setWorkoutPlans, workoutPlans, setWorkoutPlan } = useAppStore();
 
   const [visible, setVisible] = useState(false);
   const [selectedWorkout, setSelectedWorkout] = useState<WorkoutPlan | null>(null);
@@ -28,10 +28,8 @@ export default function TemplateBuilder() {
   }, []);
 
   const handlePress = (item: WorkoutPlan) => {
-    router.push({
-      pathname: "/Workout", // Adjust path if your file is named differently
-      params: { plan: JSON.stringify(item) }, // Serialize the object
-    });
+    setWorkoutPlan(item);
+    router.push("/Workout");
   };
 
   const handleAddNew = () => {
@@ -41,10 +39,9 @@ export default function TemplateBuilder() {
       exercises: [],
     };
 
-    router.push({
-      pathname: "/Workout",
-      params: { plan: JSON.stringify(placeholderPlan) },
-    });
+    setWorkoutPlan(placeholderPlan);
+
+    router.push("/Workout");
   };
 
   return (
@@ -77,10 +74,9 @@ export default function TemplateBuilder() {
               <Text style={styles.deleteButtonText}>X</Text>
             </Pressable>
           </Pressable>
-
         ))}
       </ScrollView>
-      <DeleteModal visibility={visible} setVisible={setVisible} workout={selectedWorkout} />
+      <DeleteModal visibility={visible} setVisible={setVisible} item={selectedWorkout} />
     </View>
   );
 }

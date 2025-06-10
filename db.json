@@ -13,6 +13,16 @@
           "id": "2",
           "name": "Push-ups",
           "category": "Chest"
+        },
+        {
+          "id": "9",
+          "name": "Lunge",
+          "category": "Legs"
+        },
+        {
+          "id": "7",
+          "name": "Pull up",
+          "category": "Arms"
         }
       ]
     },
@@ -31,6 +41,105 @@
           "category": "Legs"
         }
       ]
+    },
+    {
+      "id": "4",
+      "name": "Pull Day",
+      "exercises": [
+        {
+          "id": "1",
+          "name": "Deadlifts",
+          "category": "Back"
+        },
+        {
+          "id": "2",
+          "name": "Barbell Rows",
+          "category": "Back"
+        },
+        {
+          "id": "3",
+          "name": "Bicep Curls",
+          "category": "Arms"
+        }
+      ]
+    },
+    {
+      "id": "5",
+      "name": "Full Body Circuit",
+      "exercises": [
+        {
+          "id": "1",
+          "name": "Burpees",
+          "category": "Cardio"
+        },
+        {
+          "id": "2",
+          "name": "Kettlebell Swings",
+          "category": "Full Body"
+        }
+      ]
+    }
+  ],
+  "exercises": [
+    {
+      "id": "1",
+      "name": "Squat",
+      "category": "Legs"
+    },
+    {
+      "id": "2",
+      "name": "Bench Press",
+      "category": "Chest"
+    },
+    {
+      "id": "3",
+      "name": "Deadlift",
+      "category": "Back"
+    },
+    {
+      "id": "4",
+      "name": "Shoulder Press",
+      "category": "Shoulders"
+    },
+    {
+      "id": "5",
+      "name": "Bicep Curl",
+      "category": "Arms"
+    },
+    {
+      "id": "6",
+      "name": "Leg Press",
+      "category": "Legs"
+    },
+    {
+      "id": "7",
+      "name": "Pull up",
+      "category": "Arms"
+    },
+    {
+      "id": "8",
+      "name": "Tricep Dip",
+      "category": "Arms"
+    },
+    {
+      "id": "9",
+      "name": "Lunge",
+      "category": "Legs"
+    },
+    {
+      "id": "10",
+      "name": "Incline Dumbbell Press",
+      "category": "Chest"
+    },
+    {
+      "id": "11",
+      "name": "Lat Pulldown",
+      "category": "Back"
+    },
+    {
+      "id": "12",
+      "name": "Front Raise",
+      "category": "Shoulders"
     }
   ]
 }

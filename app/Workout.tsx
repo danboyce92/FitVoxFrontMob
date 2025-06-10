@@ -1,32 +1,45 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useLocalSearchParams, useRouter } from "expo-router";
+import { useRouter } from "expo-router";
 
-import CustomModal from "@/components/DeleteModal";
+import AddExerciseModal from "@/components/AddExerciseModal";
+import DeleteModal from "@/components/DeleteModal";
+import useAppStore from "@/store/useAppStore";
 import { Exercise } from "@/types/types";
 
 export default function Workout() {
   const router = useRouter();
+  const { currentExercise, setExercise, currentWorkoutPlan } = useAppStore();
 
-  const { plan } = useLocalSearchParams();
-  const parsedPlan = plan ? JSON.parse(Array.isArray(plan) ? plan[0] : plan) : { name: "Unnamed", exercises: [] };
+  const [visibleDel, setVisibleDel] = useState(false);
+  const [visibleAdd, setVisibleAdd] = useState(false);
 
-  const [visible, setVisible] = useState(false);
-  const [selectedExercise, setSelectedExercise] = useState<Exercise | null>(null);
+  const exercises: Exercise[] = currentWorkoutPlan?.exercises ?? [];
 
-  // Dummy exercise list
-  const exercises: Exercise[] = parsedPlan.exercises ?? [];
+  useEffect(() => {}, []);
+
+  if (!currentWorkoutPlan) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>No workout plan selected.</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{parsedPlan.name}</Text>
+      <Text style={styles.title}>{currentWorkoutPlan?.name ?? "Unnamed"}</Text>
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View>
-          <Pressable style={({ hovered }) => [styles.exerciseItem, hovered && styles.itemHovered]}>
+          <Pressable
+            onPress={() => setVisibleAdd(true)}
+            style={({ hovered }) => [styles.exerciseItem, hovered && styles.itemHovered]}
+          >
             <Text style={styles.exerciseName}>Add exercise +</Text>
           </Pressable>
         </View>
+
         {exercises.map((exercise) => (
           <View key={exercise.id} style={styles.exerciseItemRow}>
             <View style={styles.exerciseTextContainer}>
@@ -35,8 +48,8 @@ export default function Workout() {
             </View>
             <Pressable
               onPress={() => {
-                setSelectedExercise(exercise);
-                setVisible(true);
+                setExercise(exercise);
+                setVisibleDel(true);
               }}
               style={({ hovered }) => [styles.deleteButton, hovered && styles.deleteButtonHovered]}
             >
@@ -50,7 +63,8 @@ export default function Workout() {
         <Text style={styles.backButtonText}>← Back</Text>
       </TouchableOpacity>
 
-      {/* <CustomModal visibility={visible} setVisible={setVisible} exercise={selectedExercise} /> */}
+      <AddExerciseModal visibility={visibleAdd} setVisible={setVisibleAdd} currentPlan={currentWorkoutPlan} />
+      <DeleteModal visibility={visibleDel} setVisible={setVisibleDel} item={currentExercise} />
     </View>
   );
 }

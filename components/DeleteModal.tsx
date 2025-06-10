@@ -1,29 +1,60 @@
 import React from "react";
 import { Button, Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
-import { WorkoutPlan } from "@/types/types";
-import { deleteWorkoutPlan } from "@/app/api";
+import { deleteWorkoutPlan, updateWorkoutPlan } from "@/app/api";
+import useAppStore from "@/store/useAppStore";
+import { Exercise, WorkoutPlan } from "@/types/types";
 
-interface CustomModalProps {
+interface DeleteModal {
   visibility: boolean;
   setVisible: (visible: boolean) => void;
-  workout: WorkoutPlan | null;
+  item: WorkoutPlan | Exercise | null;
 }
 
-export default function DeleteModal({ visibility, setVisible, workout }: CustomModalProps) {
+const isWorkoutPlan = (w: WorkoutPlan | Exercise | null): w is WorkoutPlan => !!w && "exercises" in w;
+
+export default function DeleteModal({ visibility, setVisible, item }: DeleteModal) {
+  const { currentWorkoutPlan, setWorkoutPlan } = useAppStore();
+  const handleDelete = async () => {
+    if (!item) return;
+
+    try {
+      if (isWorkoutPlan(item)) {
+        // It's a full workout plan – delete it
+        await deleteWorkoutPlan(Number(item.id));
+      } else if (currentWorkoutPlan) {
+        const updatedExercises = currentWorkoutPlan.exercises.filter((exercise) => exercise.id !== item.id);
+
+        const updatedPlan = {
+          ...currentWorkoutPlan,
+          exercises: updatedExercises,
+        };
+
+        const saved = await updateWorkoutPlan(Number(currentWorkoutPlan.id), updatedPlan);
+        setWorkoutPlan(saved);
+      }
+    } catch (error) {
+      console.error("Error handling delete:", error);
+    }
+    setVisible(false);
+  };
+
   return (
-    <Modal visible={visibility} transparent={true} animationType="slide" onRequestClose={() => setVisible(false)}>
+    <Modal visible={visibility} transparent animationType="slide" onRequestClose={() => setVisible(false)}>
       <Pressable style={styles.modalOverlay} onPress={() => setVisible(false)}>
         <View style={styles.modalContent}>
-
-          {workout && (
+          {item && (
             <>
-              <Text>Are you sure you want to delete { workout.name } ?</Text>
-              <Pressable style={styles.deleteButton} onPress={() => deleteWorkoutPlan(Number(workout.id))}>
+              <Text>
+                {isWorkoutPlan(item) ? `Delete entire workout plan “${item.name}”?` : `Delete exercise “${item.name}”?`}
+              </Text>
+
+              <Pressable style={styles.deleteButton} onPress={handleDelete}>
                 <Text style={styles.deleteButtonText}>Delete</Text>
               </Pressable>
             </>
           )}
+
           <Button title="Close" onPress={() => setVisible(false)} />
         </View>
       </Pressable>
@@ -52,10 +83,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 6,
   },
-    deleteButtonText: {
+  deleteButtonText: {
     fontSize: 16,
     fontWeight: "bold",
     color: "#FFF",
   },
-
 });

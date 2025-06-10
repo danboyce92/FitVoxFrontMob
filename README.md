@@ -15,3 +15,6 @@ Fitness Tracker App, Frontend Mobile using React-Native
 -Modal should have a search bar in the top, and should display a number of different exercises.
 -Add some to implement but more should be added later to fill in the variety.
 
+## 08-06
+
+Delete button should update state and also close modal when it is clicked for deletion of workoutplan. Currently it does neither.

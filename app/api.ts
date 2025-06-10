@@ -2,7 +2,11 @@ import axios from "axios";
 
 import { WorkoutPlan } from "@/types/types";
 
+// const API_URL = "http://192.168.1.223:5678/workout-plans";
 const API_URL = "http://localhost:5678/workout-plans";
+
+// const API_URL_EX = "http://192.168.1.223:5678/exercises";
+const API_URL_EX = "http://localhost:5678/exercises";
 
 export const getWorkoutPlan = async (id: number) => {
   try {
@@ -55,6 +59,17 @@ export const deleteWorkoutPlan = async (id: number) => {
     return response.data;
   } catch (error) {
     console.error("Error deleting workout plan:", error);
+    throw error;
+  }
+};
+
+export const getExercises = async () => {
+  try {
+    const response = await axios.get(API_URL_EX);
+
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching workout plans:", error);
     throw error;
   }
 };
