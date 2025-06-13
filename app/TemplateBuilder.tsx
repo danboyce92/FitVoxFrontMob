@@ -8,6 +8,7 @@ import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { WorkoutPlan } from "@/types/types";
 
+
 export default function TemplateBuilder() {
   const router = useRouter();
   const { setWorkoutPlans, workoutPlans, setWorkoutPlan } = useAppStore();
@@ -33,14 +34,14 @@ export default function TemplateBuilder() {
   };
 
   const handleAddNew = () => {
-    const placeholderPlan = {
-      id: "new",
+    
+    const newPlan: WorkoutPlan = {
+      id: workoutPlans.length.toString(),
       name: "New Workout Plan",
       exercises: [],
     };
 
-    setWorkoutPlan(placeholderPlan);
-
+    setWorkoutPlan(newPlan);
     router.push("/Workout");
   };
 
@@ -57,7 +58,7 @@ export default function TemplateBuilder() {
             onPress={() => handlePress(item)}
             style={({ hovered }) => [
               styles.itemRow,
-              hovered && styles.itemHovered, // apply hover style to the whole row
+              hovered && styles.itemHovered,
             ]}
           >
             <View style={styles.itemTextContainer}>
@@ -94,14 +95,14 @@ const styles = StyleSheet.create({
   itemText: { fontSize: 16, fontWeight: "600" },
   addButton: { backgroundColor: "#d0f0d0" },
   itemHovered: {
-    backgroundColor: "#d0f0d0", // or whatever hover color you like
+    backgroundColor: "#d0f0d0",
   },
   deleteButton: {
     backgroundColor: "#ffdddd",
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 8,
-    marginRight: 10, // ← this adds space from the right edge
+    marginRight: 10,
   },
 
   deleteButtonText: {
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
     color: "#b00000",
   },
   deleteButtonHovered: {
-    backgroundColor: "#ffbbbb", // brighter red on hover
+    backgroundColor: "#ffbbbb",
   },
   itemRow: {
     flexDirection: "row",

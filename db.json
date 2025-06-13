@@ -18,11 +18,6 @@
           "id": "9",
           "name": "Lunge",
           "category": "Legs"
-        },
-        {
-          "id": "7",
-          "name": "Pull up",
-          "category": "Arms"
         }
       ]
     },
@@ -44,21 +39,11 @@
     },
     {
       "id": "4",
-      "name": "Pull Day",
+      "name": "New Workout Plan",
       "exercises": [
         {
-          "id": "1",
-          "name": "Deadlifts",
-          "category": "Back"
-        },
-        {
-          "id": "2",
-          "name": "Barbell Rows",
-          "category": "Back"
-        },
-        {
-          "id": "3",
-          "name": "Bicep Curls",
+          "id": "5",
+          "name": "Bicep Curl",
           "category": "Arms"
         }
       ]
