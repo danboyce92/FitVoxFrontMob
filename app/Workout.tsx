@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
 
 import AddExerciseModal from "@/components/AddExerciseModal";
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { Exercise } from "@/types/types";
+// import PencilIcon from '../assets/pencil.svg';
+
+
 
 export default function Workout() {
   const router = useRouter();
@@ -28,7 +31,13 @@ export default function Workout() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{currentWorkoutPlan?.name ?? "Unnamed"}</Text>
+      <TextInput   
+        editable={false}
+        placeholder={currentWorkoutPlan?.name ?? "Unnamed"}
+        selectTextOnFocus={false} 
+        style={styles.title}  
+      />
+      {/* <Button></Button> */}
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View>
@@ -76,6 +85,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 20,
     textAlign: "center",
+    marginHorizontal: "auto",
+    paddingVertical: 4,
   },
   scrollContent: {
     paddingBottom: 100,

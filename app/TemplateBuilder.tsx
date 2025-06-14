@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
-import { getAllWorkoutPlans } from "./api";
+import { getAllWorkoutPlans, createWorkoutPlan } from "./api";
 
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
@@ -20,13 +20,13 @@ export default function TemplateBuilder() {
     const fetchWorkoutPlans = async () => {
       try {
         const plans = await getAllWorkoutPlans();
-        setWorkoutPlans(plans);
+        setWorkoutPlans(plans.reverse());
       } catch (error) {
         console.error("Error fetching health record:", error);
       }
     };
     fetchWorkoutPlans();
-  }, []);
+  }, [workoutPlans]);
 
   const handlePress = (item: WorkoutPlan) => {
     setWorkoutPlan(item);
@@ -40,6 +40,8 @@ export default function TemplateBuilder() {
       name: "New Workout Plan",
       exercises: [],
     };
+
+    createWorkoutPlan(newPlan);
 
     setWorkoutPlan(newPlan);
     router.push("/Workout");

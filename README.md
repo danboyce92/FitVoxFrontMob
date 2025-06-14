@@ -24,3 +24,8 @@ Delete button should update state and also close modal when it is clicked for de
 Add new workout should create a new workout
 Need to add functionality for changing name of currently selected workouts
 That should be the last of this section, then move onto the record workout section
+
+## 14-06
+Workout plan considerations. 
+-Should users be able to add the same exercise multiple times?
+-Should users be able to order exercises specifically?

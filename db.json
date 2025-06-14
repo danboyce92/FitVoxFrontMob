@@ -38,17 +38,6 @@
       ]
     },
     {
-      "id": "4",
-      "name": "New Workout Plan",
-      "exercises": [
-        {
-          "id": "5",
-          "name": "Bicep Curl",
-          "category": "Arms"
-        }
-      ]
-    },
-    {
       "id": "5",
       "name": "Full Body Circuit",
       "exercises": [
