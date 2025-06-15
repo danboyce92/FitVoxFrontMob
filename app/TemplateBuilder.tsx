@@ -1,9 +1,7 @@
-// import { workoutPlans } from "@/dummyData";
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
 import { getAllWorkoutPlans, createWorkoutPlan } from "./api";
-
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { WorkoutPlan } from "@/types/types";

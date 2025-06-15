@@ -1,25 +1,52 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button, Pressable, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from "react-native";
 import { useRouter } from "expo-router";
-
 import AddExerciseModal from "@/components/AddExerciseModal";
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { Exercise } from "@/types/types";
 import PencilIcon from '../assets/pencil.svg';
-
-
+import { updateWorkoutPlan } from "./api";
 
 export default function Workout() {
   const router = useRouter();
   const { currentExercise, setExercise, currentWorkoutPlan } = useAppStore();
-
   const [visibleDel, setVisibleDel] = useState(false);
   const [visibleAdd, setVisibleAdd] = useState(false);
+  const [titleEdit, setTitleEdit] = useState(false);
+  const [inputPlaceholder, setInputPlaceholder] = useState(currentWorkoutPlan?.name ?? "Unnamed");
+  const [inputText, setInputText] = useState("");
+  const inputRef = useRef<TextInput>(null);
+
 
   const exercises: Exercise[] = currentWorkoutPlan?.exercises ?? [];
 
-  useEffect(() => {}, []);
+  const handleEdit = () => {
+    setInputPlaceholder("");
+    setTitleEdit((prev) => {
+      const next = !prev;
+
+      // After enabling edit mode, focus the input
+      if (!prev) {
+        setTimeout(() => {
+          inputRef.current?.focus();
+        }, 0); // delay needed to ensure editable=true takes effect first
+      }
+
+      return next;
+    });
+
+    setInputPlaceholder((prev) =>
+      titleEdit ? currentWorkoutPlan?.name ?? "Unnamed" : ""
+    );
+  }
+
+  const handleEditSave = (newName: string) => {
+  const newPlan = { ...currentWorkoutPlan, name: newName };
+  updateWorkoutPlan(Number(currentWorkoutPlan.id), newPlan);
+  setInputPlaceholder(newName);
+  setTitleEdit(!titleEdit);
+};
 
   if (!currentWorkoutPlan) {
     return (
@@ -33,12 +60,27 @@ export default function Workout() {
     <View style={styles.container}>
       <View style={styles.header}>
       <TextInput   
-        editable={false}
-        placeholder={currentWorkoutPlan?.name ?? "Unnamed"}
-        selectTextOnFocus={false} 
+        editable={titleEdit}
+        placeholder={inputPlaceholder}
+        selectTextOnFocus={titleEdit} 
+        ref={inputRef}
+        value={inputText}
+        onChangeText={setInputText}
+        multiline={true}
         style={styles.title}  
       />
-      <Pressable><PencilIcon width={25} /></Pressable>
+      <Pressable onPress={() => {handleEdit()}}>
+        {!titleEdit &&
+          <PencilIcon width={25} />
+        }
+        {titleEdit &&
+          <Pressable style={styles.saveButton} onPress={() => handleEditSave(inputText)}>
+          <Text style={styles.saveButtonText}>Save</Text>
+          </Pressable>
+        }
+
+
+      </Pressable>
       </View>
 
 
@@ -89,6 +131,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 4,
     alignItems: "center",
+    flex: 1,
 
   },
   scrollContent: {
@@ -162,7 +205,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 80,
-    width: "50%",
     margin: "auto",
-  }
+    width: "100%",
+    alignSelf: 'flex-start',
+  },
+  saveButton: {
+  backgroundColor: "#97F587",
+  paddingVertical: 10,
+  paddingHorizontal: 20,
+  borderRadius: 8,
+  alignItems: "center",
+  marginLeft: 6,
+},
+saveButtonText: {
+  fontWeight: "bold",
+  fontSize: 16,
+},
 });

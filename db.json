@@ -2,7 +2,7 @@
   "workout-plans": [
     {
       "id": "1",
-      "name": "Push Day",
+      "name": "Push Day and Legs",
       "exercises": [
         {
           "id": "1",
@@ -55,8 +55,19 @@
     },
     {
       "id": "3",
-      "name": "New Workout Plan",
-      "exercises": []
+      "name": "Arm Day New How long can this go?",
+      "exercises": [
+        {
+          "id": "7",
+          "name": "Pull up",
+          "category": "Arms"
+        },
+        {
+          "id": "5",
+          "name": "Bicep Curl",
+          "category": "Arms"
+        }
+      ]
     }
   ],
   "exercises": [
