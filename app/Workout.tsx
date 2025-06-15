@@ -6,7 +6,7 @@ import AddExerciseModal from "@/components/AddExerciseModal";
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { Exercise } from "@/types/types";
-// import PencilIcon from '../assets/pencil.svg';
+import PencilIcon from '../assets/pencil.svg';
 
 
 
@@ -31,13 +31,16 @@ export default function Workout() {
 
   return (
     <View style={styles.container}>
+      <View style={styles.header}>
       <TextInput   
         editable={false}
         placeholder={currentWorkoutPlan?.name ?? "Unnamed"}
         selectTextOnFocus={false} 
         style={styles.title}  
       />
-      {/* <Button></Button> */}
+      <Pressable><PencilIcon width={25} /></Pressable>
+      </View>
+
 
       <ScrollView contentContainerStyle={styles.scrollContent}>
         <View>
@@ -83,10 +86,10 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: "700",
-    marginBottom: 20,
     textAlign: "center",
-    marginHorizontal: "auto",
-    paddingVertical: 4,
+    padding: 4,
+    alignItems: "center",
+
   },
   scrollContent: {
     paddingBottom: 100,
@@ -153,4 +156,13 @@ const styles = StyleSheet.create({
   deleteButtonHovered: {
     backgroundColor: "#ffbbbb", // brighter red on hover
   },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    height: 80,
+    width: "50%",
+    margin: "auto",
+  }
 });

@@ -52,6 +52,11 @@
           "category": "Full Body"
         }
       ]
+    },
+    {
+      "id": "3",
+      "name": "New Workout Plan",
+      "exercises": []
     }
   ],
   "exercises": [
