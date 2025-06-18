@@ -1,19 +1,24 @@
 import CustomButton from "@/components/CustomButton";
+import { useState } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
 
 interface CardType {
   setNumber: number;
   exerciseName: string;
+  addSet: () => void;
 }
 
-export default function AdditionalSet({ setNumber, exerciseName }: CardType) {
+export default function AdditionalSet({ setNumber, exerciseName, addSet }: CardType) {
+  const [hideButton, setHideButton] = useState(false);
+
+    const handleAddSetButton = () => {
+        addSet();
+        setHideButton(true);
+    }
+
   return (
     <View style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.cardTitle}>{exerciseName}</Text>
-        <Text>Set {setNumber + 2}</Text>
-      </View>
-
+      <Text style={styles.cardTitle}>Set {setNumber}</Text>
       <View style={styles.set}>
         <Text>Reps:</Text>
         <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
@@ -22,12 +27,18 @@ export default function AdditionalSet({ setNumber, exerciseName }: CardType) {
         <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
       </View>
 
-      <CustomButton
-        title="+ Add set +"
-        variant="secondary"
-        onPress={() => {}}
-        style={styles.addSetBtn}
-      />
+      <View
+        style={[
+          styles.addSetBtnWrapper,
+          hideButton && styles.hidden, // apply hidden style if toggled
+        ]}
+      >
+        <CustomButton
+          title="+ Add set +"
+          variant="secondary"
+          onPress={handleAddSetButton}
+        />
+      </View>
     </View>
   );
 }
@@ -35,18 +46,10 @@ export default function AdditionalSet({ setNumber, exerciseName }: CardType) {
 const styles = StyleSheet.create({
   card: {
     padding: 16,
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
     marginVertical: 12,
     backgroundColor: "#fff",
-    width: "95%",
     alignSelf: "flex-end",
-  },
-  header: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    width: '90%',
   },
   cardTitle: {
     fontSize: 18,
@@ -69,6 +72,15 @@ const styles = StyleSheet.create({
   },
   addSetBtn: {
     margin: 'auto',
-    alignSelf: "center",
+    alignSelf: "flex-end",
+  },
+    addSetBtnWrapper: {
+    alignItems: "center",
+    margin: 'auto',
+    marginVertical: 8,
+  },
+  hidden: {
+    opacity: 0,
+    pointerEvents: "none",
   },
 });

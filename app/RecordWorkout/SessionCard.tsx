@@ -9,9 +9,14 @@ interface CardType {
 
 export default function SessionCard({ exerciseName }: CardType) {
   const [additionalSets, setAdditionalSets] = useState<number[]>([]);
+  const [hideButton, setHideButton] = useState(false);
 
+  const addNewSet = () => {
+    setAdditionalSets((prev) => [...prev, prev.length + 1]);
+  }
   const handleAddSet = () => {
-    setAdditionalSets((prev) => [...prev, prev.length + 1]); // simple index array
+    addNewSet();
+    setHideButton(true); // hide the button after first click
   };
 
   return (
@@ -24,20 +29,25 @@ export default function SessionCard({ exerciseName }: CardType) {
       <View style={styles.set}>
         <Text>Reps:</Text>
         <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
-
         <Text>Weight:</Text>
         <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
       </View>
 
-      <CustomButton
-        title="+ Add set +"
-        variant="secondary"
-        onPress={handleAddSet}
-        style={styles.addSetBtn}
-      />
+      <View
+        style={[
+          styles.addSetBtnWrapper,
+          hideButton && styles.hidden, // apply hidden style if toggled
+        ]}
+      >
+        <CustomButton
+          title="+ Add set +"
+          variant="secondary"
+          onPress={handleAddSet}
+        />
+      </View>
 
       {additionalSets.map((_, index) => (
-        <AdditionalSet key={index} setNumber={index} exerciseName={exerciseName} />
+        <AdditionalSet key={index} setNumber={index + 2} exerciseName={exerciseName} addSet={addNewSet} />
       ))}
     </View>
   );
@@ -53,7 +63,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-    display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
@@ -76,8 +85,13 @@ const styles = StyleSheet.create({
     minWidth: 60,
     marginHorizontal: 4,
   },
-  addSetBtn: {
+  addSetBtnWrapper: {
+    alignItems: "center",
     margin: 'auto',
-    alignSelf: "center",
+    marginVertical: 8,
+  },
+  hidden: {
+    opacity: 0,
+    pointerEvents: "none",
   },
 });
