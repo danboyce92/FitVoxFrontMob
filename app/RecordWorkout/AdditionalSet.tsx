@@ -1,24 +1,17 @@
 import CustomButton from "@/components/CustomButton";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import AdditionalSet from "./AdditionalSet";
-import { useState } from "react";
 
 interface CardType {
+  setNumber: number;
   exerciseName: string;
 }
 
-export default function SessionCard({ exerciseName }: CardType) {
-  const [additionalSets, setAdditionalSets] = useState<number[]>([]);
-
-  const handleAddSet = () => {
-    setAdditionalSets((prev) => [...prev, prev.length + 1]); // simple index array
-  };
-
+export default function AdditionalSet({ setNumber, exerciseName }: CardType) {
   return (
     <View style={styles.card}>
       <View style={styles.header}>
         <Text style={styles.cardTitle}>{exerciseName}</Text>
-        <Text>Set 1</Text>
+        <Text>Set {setNumber + 2}</Text>
       </View>
 
       <View style={styles.set}>
@@ -32,13 +25,9 @@ export default function SessionCard({ exerciseName }: CardType) {
       <CustomButton
         title="+ Add set +"
         variant="secondary"
-        onPress={handleAddSet}
+        onPress={() => {}}
         style={styles.addSetBtn}
       />
-
-      {additionalSets.map((_, index) => (
-        <AdditionalSet key={index} setNumber={index} exerciseName={exerciseName} />
-      ))}
     </View>
   );
 }
@@ -46,11 +35,13 @@ export default function SessionCard({ exerciseName }: CardType) {
 const styles = StyleSheet.create({
   card: {
     padding: 16,
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 8,
-    marginBottom: 12,
+    marginVertical: 12,
     backgroundColor: "#fff",
+    width: "95%",
+    alignSelf: "flex-end",
   },
   header: {
     display: 'flex',
