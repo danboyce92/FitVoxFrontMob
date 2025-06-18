@@ -1,14 +1,15 @@
-import CustomButton from "@/components/CustomButton";
+import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
-import useAppStore from "@/store/useAppStore";
-import { getAllWorkoutPlans, getWorkoutPlan } from "../api";
-import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
+
+import { getAllWorkoutPlans, getWorkoutPlan } from "@/app/api";
+import CustomButton from "@/components/CustomButton";
+import useAppStore from "@/store/useAppStore";
 
 export default function RecordWorkout() {
   const [startToggle, setStartToggle] = useState(true);
   const { workoutPlans, currentWorkoutPlan, setWorkoutPlan, setWorkoutPlans } = useAppStore();
-    const router = useRouter();
+  const router = useRouter();
 
   const handleGetPlan = async (id: number) => {
     try {
@@ -47,7 +48,9 @@ export default function RecordWorkout() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <Text style={styles.placeholderText}>{currentWorkoutPlan ? currentWorkoutPlan.name : "Please select your workout"}</Text>
+        <Text style={styles.placeholderText}>
+          {currentWorkoutPlan ? currentWorkoutPlan.name : "Please select your workout"}
+        </Text>
         <CustomButton disabled={startToggle} title="Start" onPress={() => router.push("/RecordWorkout/Session")} />
       </View>
     </View>

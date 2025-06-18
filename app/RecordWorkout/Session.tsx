@@ -1,10 +1,11 @@
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import useAppStore from "@/store/useAppStore";
-import CustomButton from "@/components/CustomButton";
 import SessionCard from "./SessionCard";
 
+import CustomButton from "@/components/CustomButton";
+import useAppStore from "@/store/useAppStore";
+
 export default function Session() {
-  const { workoutPlans, currentWorkoutPlan } = useAppStore();
+  const { currentWorkoutPlan } = useAppStore();
 
   return (
     <View style={styles.page}>
@@ -36,15 +37,13 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   footer: {
-    flexDirection: "row",           
-    justifyContent: "flex-end",     
-    alignItems: "center",           
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
     padding: 16,
     borderTopWidth: 1,
     borderColor: "#ccc",
     backgroundColor: "#f9f9f9",
   },
-  finishBtn: {
-
-  },
+  finishBtn: {},
 });

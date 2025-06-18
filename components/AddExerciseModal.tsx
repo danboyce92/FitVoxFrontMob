@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import CustomButton from "./CustomButton";
 
 import { getExercises, updateWorkoutPlan } from "@/app/api";
 import useAppStore from "@/store/useAppStore";
 import { Exercise, WorkoutPlan } from "@/types/types";
-import CustomButton from "./CustomButton";
 
 interface CustomModalProps {
   visibility: boolean;

@@ -10,9 +10,6 @@ export type WorkoutPlan = {
   exercises: Exercise[];
 };
 
-
-
-
 /*
 type ExerciseRecord =
   | ResistanceExerciseRecord

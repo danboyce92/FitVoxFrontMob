@@ -1,7 +1,8 @@
-import CustomButton from "@/components/CustomButton";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import AdditionalSet from "./AdditionalSet";
-import { useState } from "react";
+
+import CustomButton from "@/components/CustomButton";
 
 interface CardType {
   exerciseName: string;
@@ -13,11 +14,23 @@ export default function SessionCard({ exerciseName }: CardType) {
 
   const addNewSet = () => {
     setAdditionalSets((prev) => [...prev, prev.length + 1]);
-  }
+  };
   const handleAddSet = () => {
     addNewSet();
-    setHideButton(true); // hide the button after first click
+    setHideButton(true);
   };
+  const handleRemoveSet = () => {
+    setAdditionalSets((prev) => prev.slice(0, -1));
+  };
+  const handleMainAddSetButton = () => {
+    if (additionalSets.length < 1) {
+      setHideButton(false);
+    }
+  };
+
+  useEffect(() => {
+    handleMainAddSetButton();
+  }, [additionalSets]);
 
   return (
     <View style={styles.card}>
@@ -39,15 +52,18 @@ export default function SessionCard({ exerciseName }: CardType) {
           hideButton && styles.hidden, // apply hidden style if toggled
         ]}
       >
-        <CustomButton
-          title="+ Add set +"
-          variant="secondary"
-          onPress={handleAddSet}
-        />
+        <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
       </View>
 
       {additionalSets.map((_, index) => (
-        <AdditionalSet key={index} setNumber={index + 2} exerciseName={exerciseName} addSet={addNewSet} />
+        <AdditionalSet
+          key={index}
+          index={index}
+          setNumber={index + 2}
+          addSet={addNewSet}
+          removeSet={handleRemoveSet}
+          setLength={additionalSets.length}
+        />
       ))}
     </View>
   );
@@ -63,8 +79,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   cardTitle: {
     fontSize: 18,
@@ -87,7 +103,7 @@ const styles = StyleSheet.create({
   },
   addSetBtnWrapper: {
     alignItems: "center",
-    margin: 'auto',
+    margin: "auto",
     marginVertical: 8,
   },
   hidden: {

@@ -1,20 +1,21 @@
+import { StyleSheet, Text, TextInput, View } from "react-native";
+
 import CustomButton from "@/components/CustomButton";
-import { useState } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
 
 interface CardType {
+  index: number;
   setNumber: number;
-  exerciseName: string;
   addSet: () => void;
+  removeSet: () => void;
+  setLength: number;
 }
 
-export default function AdditionalSet({ setNumber, exerciseName, addSet }: CardType) {
-  const [hideButton, setHideButton] = useState(false);
+export default function AdditionalSet({ index, setNumber, addSet, removeSet, setLength }: CardType) {
+  const isLastSet = index === setLength - 1;
 
-    const handleAddSetButton = () => {
-        addSet();
-        setHideButton(true);
-    }
+  const handleAddSetButton = () => {
+    addSet();
+  };
 
   return (
     <View style={styles.card}>
@@ -30,14 +31,11 @@ export default function AdditionalSet({ setNumber, exerciseName, addSet }: CardT
       <View
         style={[
           styles.addSetBtnWrapper,
-          hideButton && styles.hidden, // apply hidden style if toggled
+          !isLastSet && styles.hidden, // hide if NOT the last set
         ]}
       >
-        <CustomButton
-          title="+ Add set +"
-          variant="secondary"
-          onPress={handleAddSetButton}
-        />
+        <CustomButton title="Remove Set" variant="tertiary" onPress={removeSet} />
+        <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSetButton} />
       </View>
     </View>
   );
@@ -49,7 +47,7 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     backgroundColor: "#fff",
     alignSelf: "flex-end",
-    width: '90%',
+    width: "90%",
   },
   cardTitle: {
     fontSize: 18,
@@ -70,17 +68,16 @@ const styles = StyleSheet.create({
     minWidth: 60,
     marginHorizontal: 4,
   },
-  addSetBtn: {
-    margin: 'auto',
-    alignSelf: "flex-end",
-  },
-    addSetBtnWrapper: {
+  addSetBtnWrapper: {
     alignItems: "center",
-    margin: 'auto',
+    margin: "auto",
     marginVertical: 8,
+    display: "flex",
+    flexDirection: "row",
   },
   hidden: {
     opacity: 0,
     pointerEvents: "none",
+    marginVertical: -8,
   },
 });

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
-import { getAllWorkoutPlans, createWorkoutPlan } from "../api";
+
+import { createWorkoutPlan, getAllWorkoutPlans } from "@/app/api";
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { WorkoutPlan } from "@/types/types";
-
 
 export default function TemplateBuilder() {
   const router = useRouter();
@@ -32,7 +32,6 @@ export default function TemplateBuilder() {
   };
 
   const handleAddNew = () => {
-    
     const newPlan: WorkoutPlan = {
       id: workoutPlans.length.toString(),
       name: "New Workout Plan",
@@ -48,19 +47,12 @@ export default function TemplateBuilder() {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <Pressable style={({ hovered }) => [styles.item, hovered && styles.itemHovered]} onPress={handleAddNew}>
+        <Pressable style={styles.item} onPress={handleAddNew}>
           <Text style={styles.itemText}>➕ Add New Workout Plan</Text>
         </Pressable>
 
         {workoutPlans.map((item) => (
-          <Pressable
-            key={item.id}
-            onPress={() => handlePress(item)}
-            style={({ hovered }) => [
-              styles.itemRow,
-              hovered && styles.itemHovered,
-            ]}
-          >
+          <Pressable key={item.id} onPress={() => handlePress(item)} style={styles.itemRow}>
             <View style={styles.itemTextContainer}>
               <Text style={styles.itemText}>{item.name}</Text>
             </View>
@@ -93,10 +85,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   itemText: { fontSize: 16, fontWeight: "600" },
-  addButton: { backgroundColor: "#84DCCF" },
-  itemHovered: {
-    backgroundColor: "#BCCCE0",
-  },
   deleteButton: {
     backgroundColor: "#ffdddd",
     paddingHorizontal: 12,
@@ -123,12 +111,6 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: "hidden",
   },
-
-  itemContent: {
-    flex: 1,
-    padding: 20,
-  },
-
   itemTextContainer: {
     flex: 1,
     padding: 20,

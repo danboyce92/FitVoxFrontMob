@@ -1,6 +1,4 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 
 import { Exercise, WorkoutPlan } from "@/types/types";
 
@@ -18,16 +16,16 @@ interface AppStore {
 }
 
 export const planPlaceholder: WorkoutPlan = {
-      id: "0",
-    name: "Please select a workout",
-    exercises: [
-      {
-        id: "",
-        name: "",
-        category: "",
-      },
-    ],
-}
+  id: "0",
+  name: "Please select a workout",
+  exercises: [
+    {
+      id: "",
+      name: "",
+      category: "",
+    },
+  ],
+};
 
 const useAppStore = create<AppStore>((set) => ({
   loading: false,
