@@ -1,8 +1,11 @@
 import { Pressable, StyleSheet, View, Text } from "react-native";
 import { useRouter } from "expo-router";
+import useAppStore from "@/store/useAppStore";
+import { planPlaceholder } from "@/store/useAppStore";
 
 export default function Home() {
   const router = useRouter();
+    const { setWorkoutPlan } = useAppStore();
 
   return (
 <View style={styles.buttonContainer}>
@@ -10,7 +13,10 @@ export default function Home() {
     <Text style={styles.navButtonText}>Template Builder</Text>
   </Pressable>
 
-  <Pressable style={styles.navButton} onPress={() => router.push("/RecordWorkout/RecordWorkout")}>
+  <Pressable style={styles.navButton} onPress={() => {
+    setWorkoutPlan(planPlaceholder);
+    router.push("/RecordWorkout/RecordWorkout")}
+    }>
     <Text style={styles.navButtonText}>Record Workout</Text>
   </Pressable>
 

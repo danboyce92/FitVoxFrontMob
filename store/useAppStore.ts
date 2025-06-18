@@ -17,11 +17,9 @@ interface AppStore {
   setLoading: (loading: boolean) => void;
 }
 
-const useAppStore = create<AppStore>((set) => ({
-  loading: false,
-  currentWorkoutPlan: {
-    id: "0",
-    name: "unkown",
+export const planPlaceholder: WorkoutPlan = {
+      id: "0",
+    name: "Please select a workout",
     exercises: [
       {
         id: "",
@@ -29,7 +27,11 @@ const useAppStore = create<AppStore>((set) => ({
         category: "",
       },
     ],
-  },
+}
+
+const useAppStore = create<AppStore>((set) => ({
+  loading: false,
+  currentWorkoutPlan: planPlaceholder,
   workoutPlans: [],
   currentExercise: {
     id: "0",
