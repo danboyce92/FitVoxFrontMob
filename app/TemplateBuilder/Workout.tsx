@@ -5,8 +5,8 @@ import AddExerciseModal from "@/components/AddExerciseModal";
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { Exercise } from "@/types/types";
-import PencilIcon from '../assets/pencil.svg';
-import { updateWorkoutPlan } from "./api";
+import PencilIcon from '../../assets/pencil.svg';
+import { updateWorkoutPlan } from "../api";
 
 export default function Workout() {
   const router = useRouter();
@@ -210,7 +210,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
   },
   saveButton: {
-  backgroundColor: "#97F587",
+  backgroundColor: "#b0e0a0",
   paddingVertical: 10,
   paddingHorizontal: 20,
   borderRadius: 8,

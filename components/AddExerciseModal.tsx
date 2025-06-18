@@ -1,9 +1,10 @@
 import React, { useEffect } from "react";
-import { Button, Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
+import { Modal, Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { getExercises, updateWorkoutPlan } from "@/app/api";
 import useAppStore from "@/store/useAppStore";
 import { Exercise, WorkoutPlan } from "@/types/types";
+import CustomButton from "./CustomButton";
 
 interface CustomModalProps {
   visibility: boolean;
@@ -63,7 +64,7 @@ export default function AddExerciseModal({ visibility, setVisible, currentPlan }
             ))}
           </ScrollView>
 
-          <Button title="Close" onPress={() => setVisible(false)} />
+          <CustomButton title="Close" onPress={() => setVisible(false)} />
         </View>
       </Pressable>
     </Modal>

@@ -1,9 +1,10 @@
 import React from "react";
-import { Button, Modal, Pressable, StyleSheet, Text, View } from "react-native";
+import { Modal, Pressable, StyleSheet, Text, View } from "react-native";
 
 import { deleteWorkoutPlan, updateWorkoutPlan } from "@/app/api";
 import useAppStore from "@/store/useAppStore";
 import { Exercise, WorkoutPlan } from "@/types/types";
+import CustomButton from "./CustomButton";
 
 interface DeleteModal {
   visibility: boolean;
@@ -45,17 +46,13 @@ export default function DeleteModal({ visibility, setVisible, item }: DeleteModa
         <View style={styles.modalContent}>
           {item && (
             <>
-              <Text>
+              <Text style={styles.msg}>
                 {isWorkoutPlan(item) ? `Delete entire workout plan “${item.name}”?` : `Delete exercise “${item.name}”?`}
               </Text>
-
-              <Pressable style={styles.deleteButton} onPress={handleDelete}>
-                <Text style={styles.deleteButtonText}>Delete</Text>
-              </Pressable>
+              <CustomButton title="Delete" variant="danger" onPress={handleDelete}/>
             </>
           )}
-
-          <Button title="Close" onPress={() => setVisible(false)} />
+          <CustomButton title="Close" onPress={() => setVisible(false)} />
         </View>
       </Pressable>
     </Modal>
@@ -74,6 +71,10 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 10,
     minWidth: 250,
+  },
+  msg: {
+    textAlign: 'center',
+    marginBottom: 4,
   },
   deleteButton: {
     backgroundColor: "rgb(245, 11, 11)",

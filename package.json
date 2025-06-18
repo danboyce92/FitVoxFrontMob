@@ -6,6 +6,7 @@
   "scripts": {
     "start": "expo start",
     "start:mock": "json-server --watch db.json --port 5678",
+    "start:mock-records": "json-server --watch db-records.json --port 5679",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",

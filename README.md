@@ -2,7 +2,8 @@
 Fitness Tracker App, Frontend Mobile using React-Native
 
 
-
+## Future frontend additions
+A search bar in the list of exercises that filters for what is entered
 
 
 ## Moving forward
@@ -29,3 +30,9 @@ That should be the last of this section, then move onto the record workout secti
 Workout plan considerations. 
 -Should users be able to add the same exercise multiple times?
 -Should users be able to order exercises specifically?
+
+## 15-06
+Finished with initial layout, can now move on to setting up a basic way of storing workout data.
+-Will this require an addition mock database to keep things tidier?
+-How will the data be structured?
+-What data is important to keep?

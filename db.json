@@ -66,6 +66,11 @@
           "id": "5",
           "name": "Bicep Curl",
           "category": "Arms"
+        },
+        {
+          "id": "3",
+          "name": "Deadlift",
+          "category": "Back"
         }
       ]
     }

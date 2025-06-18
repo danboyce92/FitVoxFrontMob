@@ -1,23 +1,50 @@
-import { Button, StyleSheet, View } from "react-native";
+import { Pressable, StyleSheet, View, Text } from "react-native";
 import { useRouter } from "expo-router";
 
 export default function Home() {
   const router = useRouter();
 
   return (
-    <View style={styles.container}>
-      <Button title="Template Builder" onPress={() => router.push("/TemplateBuilder")} />
-      <Button title="Record Workout" onPress={() => router.push("/RecordWorkout")} />
-      <Button title="Your Progress" onPress={() => router.push("/YourProgress")} />
-    </View>
+<View style={styles.buttonContainer}>
+  <Pressable style={styles.navButton} onPress={() => router.push("/TemplateBuilder/TemplateBuilder")}>
+    <Text style={styles.navButtonText}>Template Builder</Text>
+  </Pressable>
+
+  <Pressable style={styles.navButton} onPress={() => router.push("/RecordWorkout/RecordWorkout")}>
+    <Text style={styles.navButtonText}>Record Workout</Text>
+  </Pressable>
+
+  <Pressable style={styles.navButton} onPress={() => router.push("/YourProgress")}>
+    <Text style={styles.navButtonText}>Your Progress</Text>
+  </Pressable>
+</View>
+
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    gap: 20,
-    paddingHorizontal: 40,
-  },
+buttonContainer: {
+  marginTop: 20,
+  gap: 12,
+},
+
+navButton: {
+  paddingVertical: 14,
+  paddingHorizontal: 20,
+  borderRadius: 12,
+  alignItems: "center",
+  elevation: 2, // shadow for Android
+  shadowColor: "#000",
+  shadowOffset: { width: 0, height: 2 },
+  shadowOpacity: 0.2,
+  shadowRadius: 4,
+  margin: "auto",
+  minWidth: "50%",
+  backgroundColor: "#A6D9F7",
+},
+
+navButtonText: {
+  fontSize: 16,
+  fontWeight: "bold",
+},
 });

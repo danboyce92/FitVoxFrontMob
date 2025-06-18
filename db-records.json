@@ -1,0 +1,70 @@
+{
+  "workout-records": [
+    {
+      "id": "1",
+      "plan": "Leg Day",
+      "date": "15-06-2025",
+      "exercises": [
+        {
+          "id": "1",
+          "name": "Squats",
+          "category": "Legs",
+          "sets": [
+            {
+              "setNumber": 1,
+              "reps": 10,
+              "weight": 60
+            },
+            {
+              "setNumber": 2,
+              "reps": 8,
+              "weight": 65
+            },
+            {
+              "setNumber": 3,
+              "reps": 6,
+              "weight": 70
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "name": "Lunges",
+          "category": "Legs",
+          "sets": [
+            {
+              "setNumber": 1,
+              "reps": 12,
+              "weight": 0
+            },
+            {
+              "setNumber": 2,
+              "reps": 12,
+              "weight": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "plan": "Cardio Day",
+      "date": "15-06-2025",
+      "exercises": [
+        {
+          "id": "2",
+          "name": "Treadmill",
+          "category": "Cardio",
+          "type": "cardio",
+          "metrics": {
+            "durationMinutes": 25,
+            "speedKmh": 8.5,
+            "inclinePercent": 2,
+            "distanceKm": 3.5,
+            "caloriesBurned": 300
+          }
+        }
+      ]
+    }
+  ]
+}

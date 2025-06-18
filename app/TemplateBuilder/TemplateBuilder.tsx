@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
-import { getAllWorkoutPlans, createWorkoutPlan } from "./api";
+import { getAllWorkoutPlans, createWorkoutPlan } from "../api";
 import DeleteModal from "@/components/DeleteModal";
 import useAppStore from "@/store/useAppStore";
 import { WorkoutPlan } from "@/types/types";
@@ -28,7 +28,7 @@ export default function TemplateBuilder() {
 
   const handlePress = (item: WorkoutPlan) => {
     setWorkoutPlan(item);
-    router.push("/Workout");
+    router.push("/TemplateBuilder/Workout");
   };
 
   const handleAddNew = () => {
@@ -42,7 +42,7 @@ export default function TemplateBuilder() {
     createWorkoutPlan(newPlan);
 
     setWorkoutPlan(newPlan);
-    router.push("/Workout");
+    router.push("/TemplateBuilder/Workout");
   };
 
   return (
@@ -86,16 +86,16 @@ const styles = StyleSheet.create({
   container: { flex: 1, backgroundColor: "#fff" },
   scrollContent: { paddingVertical: 20 },
   item: {
-    backgroundColor: "#f0f0f0",
+    backgroundColor: "#b0e0a0",
     padding: 20,
     marginHorizontal: 20,
     marginBottom: 10,
     borderRadius: 10,
   },
   itemText: { fontSize: 16, fontWeight: "600" },
-  addButton: { backgroundColor: "#d0f0d0" },
+  addButton: { backgroundColor: "#84DCCF" },
   itemHovered: {
-    backgroundColor: "#d0f0d0",
+    backgroundColor: "#BCCCE0",
   },
   deleteButton: {
     backgroundColor: "#ffdddd",
