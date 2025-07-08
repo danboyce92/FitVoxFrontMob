@@ -7,17 +7,20 @@
         {
           "id": "1",
           "name": "Bench Press",
-          "category": "Chest"
+          "category": "Chest",
+          "type": "resistance"
         },
         {
           "id": "2",
           "name": "Push-ups",
-          "category": "Chest"
+          "category": "Chest",
+          "type": "resistance"
         },
         {
           "id": "9",
           "name": "Lunge",
-          "category": "Legs"
+          "category": "Legs",
+          "type": "resistance"
         }
       ]
     },
@@ -28,12 +31,14 @@
         {
           "id": "1",
           "name": "Squats",
-          "category": "Legs"
+          "category": "Legs",
+          "type": "resistance"
         },
         {
           "id": "2",
           "name": "Lunges",
-          "category": "Legs"
+          "category": "Legs",
+          "type": "resistance"
         }
       ]
     },
@@ -44,33 +49,14 @@
         {
           "id": "1",
           "name": "Burpees",
-          "category": "Cardio"
+          "category": "Cardio",
+          "type": "resistance"
         },
         {
           "id": "2",
           "name": "Kettlebell Swings",
-          "category": "Full Body"
-        }
-      ]
-    },
-    {
-      "id": "3",
-      "name": "Arm Day New How long can this go?",
-      "exercises": [
-        {
-          "id": "7",
-          "name": "Pull up",
-          "category": "Arms"
-        },
-        {
-          "id": "5",
-          "name": "Bicep Curl",
-          "category": "Arms"
-        },
-        {
-          "id": "3",
-          "name": "Deadlift",
-          "category": "Back"
+          "category": "Full Body",
+          "type": "resistance"
         }
       ]
     }
@@ -79,62 +65,144 @@
     {
       "id": "1",
       "name": "Squat",
-      "category": "Legs"
+      "category": "Legs",
+      "type": "resistance"
     },
     {
       "id": "2",
       "name": "Bench Press",
-      "category": "Chest"
+      "category": "Chest",
+      "type": "resistance"
     },
     {
       "id": "3",
       "name": "Deadlift",
-      "category": "Back"
+      "category": "Back",
+      "type": "resistance"
     },
     {
       "id": "4",
       "name": "Shoulder Press",
-      "category": "Shoulders"
+      "category": "Shoulders",
+      "type": "resistance"
     },
     {
       "id": "5",
       "name": "Bicep Curl",
-      "category": "Arms"
+      "category": "Arms",
+      "type": "resistance"
     },
     {
       "id": "6",
       "name": "Leg Press",
-      "category": "Legs"
+      "category": "Legs",
+      "type": "resistance"
     },
     {
       "id": "7",
       "name": "Pull up",
-      "category": "Arms"
+      "category": "Arms",
+      "type": "resistance"
     },
     {
       "id": "8",
       "name": "Tricep Dip",
-      "category": "Arms"
+      "category": "Arms",
+      "type": "resistance"
     },
     {
       "id": "9",
       "name": "Lunge",
-      "category": "Legs"
+      "category": "Legs",
+      "type": "resistance"
     },
     {
       "id": "10",
       "name": "Incline Dumbbell Press",
-      "category": "Chest"
+      "category": "Chest",
+      "type": "resistance"
     },
     {
       "id": "11",
       "name": "Lat Pulldown",
-      "category": "Back"
+      "category": "Back",
+      "type": "resistance"
     },
     {
       "id": "12",
       "name": "Front Raise",
-      "category": "Shoulders"
+      "category": "Shoulders",
+      "type": "resistance"
+    }
+  ],
+    "workout-records": [
+    {
+      "id": "1",
+      "name": "Leg Day",
+      "date": "15-06-2025",
+      "exercises": [
+        {
+          "id": "1",
+          "name": "Squats",
+          "category": "Legs",
+          "type": "resistance",
+          "sets": [
+            {
+              "setNumber": 1,
+              "reps": 10,
+              "weight": 60
+            },
+            {
+              "setNumber": 2,
+              "reps": 8,
+              "weight": 65
+            },
+            {
+              "setNumber": 3,
+              "reps": 6,
+              "weight": 70
+            }
+          ]
+        },
+        {
+          "id": "2",
+          "name": "Lunges",
+          "category": "Legs",
+          "type": "resistance",
+          "sets": [
+            {
+              "setNumber": 1,
+              "reps": 12,
+              "weight": 0
+            },
+            {
+              "setNumber": 2,
+              "reps": 12,
+              "weight": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "2",
+      "plan": "Cardio Day",
+      "date": "15-06-2025",
+      "exercises": [
+        {
+          "id": "2",
+          "name": "Treadmill",
+          "category": "Cardio",
+          "type": "cardio",
+          "metrics": {
+            "durationMinutes": 25,
+            "speedKmh": 8.5,
+            "inclinePercent": 2,
+            "distanceKm": 3.5,
+            "caloriesBurned": 300
+          }
+        }
+      ]
     }
   ]
 }

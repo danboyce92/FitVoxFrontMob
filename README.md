@@ -2,8 +2,13 @@
 Fitness Tracker App, Frontend Mobile using React-Native
 
 
-## Future frontend additions
+## Future additions
+**Template Builder**
 A search bar in the list of exercises that filters for what is entered
+
+**Record Workout**
+Add functionality to record the amount of time it takes to record the session
+
 
 
 ## Moving forward
@@ -36,3 +41,7 @@ Finished with initial layout, can now move on to setting up a basic way of stori
 -Will this require an addition mock database to keep things tidier?
 -How will the data be structured?
 -What data is important to keep?
+
+## 18-06
+Basic structure for Record Workout section built.
+- Now I need to have it persist the data. 

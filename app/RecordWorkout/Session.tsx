@@ -3,15 +3,50 @@ import SessionCard from "./SessionCard";
 
 import CustomButton from "@/components/CustomButton";
 import useAppStore from "@/store/useAppStore";
+import { useState, useEffect } from "react";
+import { ExerciseRecord, WorkoutRecord } from "@/types/types";
+import { getAllWorkoutRecords } from "../api";
 
 export default function Session() {
-  const { currentWorkoutPlan } = useAppStore();
+  const [recordID, setRecordID] = useState(0);
+  const { currentWorkoutPlan, setCurrentWorkoutRecord } = useAppStore();
+
+  const handleSetUpWorkoutData = async () => {
+    try {
+      const records = await getAllWorkoutRecords();
+
+      setRecordID(records.length)
+
+    const newWorkoutData: WorkoutRecord = {
+      id: recordID.toString(),
+      name: currentWorkoutPlan.name,
+      date: new Date(),
+      duration: 0,
+      exerciseRecords: []
+    }
+
+    setCurrentWorkoutRecord(newWorkoutData);
+
+    } catch(error) {
+        console.error("Error fetching workout records:", error);
+        throw error;
+    }
+  }
+
+  useEffect(() => {
+    handleSetUpWorkoutData();
+  }, [])
 
   return (
     <View style={styles.page}>
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{currentWorkoutPlan.name}</Text>
-        <SessionCard exerciseName={currentWorkoutPlan.exercises[0].name} />
+        {currentWorkoutPlan.exercises.map((_, index) => (
+          <SessionCard key={index} exerciseName={currentWorkoutPlan.exercises[index].name} />
+        ))
+
+        }
+
       </ScrollView>
       <View style={styles.footer}>
         <CustomButton title="Finish Workout" onPress={() => {}} style={styles.finishBtn} />
