@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { Exercise, BaseExercise, WorkoutPlan, ExerciseRecord, WorkoutRecord } from "@/types/types";
+import { BaseExercise, Exercise, ExerciseRecord, WorkoutPlan, WorkoutRecord } from "@/types/types";
 
 interface AppStore {
   loading: boolean;
@@ -15,7 +15,6 @@ interface AppStore {
   setExercise: (exercise: Exercise) => void;
   setExercises: (exercises: Exercise[]) => void;
   setLoading: (loading: boolean) => void;
-  
 }
 
 export const planPlaceholder: WorkoutPlan = {
@@ -54,7 +53,7 @@ const useAppStore = create<AppStore>((set) => ({
     name: "placeholder",
     date: new Date(),
     duration: 0,
-    exerciseRecords: []
+    exerciseRecords: [],
   },
   setCurrentWorkoutRecord: (currentWorkoutRecord: WorkoutRecord) => set({ currentWorkoutRecord }),
   setWorkoutPlan: (currentWorkoutPlan: WorkoutPlan) => set({ currentWorkoutPlan }),

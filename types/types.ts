@@ -1,10 +1,10 @@
-//For Template Building 
+//For Template Building
 
 export type Exercise = {
   id: string;
   name: string;
   category: string;
-  type: "resistance" | "cardio"
+  type: "resistance" | "cardio";
 };
 
 export type WorkoutPlan = {
@@ -21,12 +21,9 @@ export type WorkoutRecord = {
   date: Date;
   duration: number;
   exerciseRecords: ExerciseRecord[];
-}
+};
 
-export type ExerciseRecord =
-  | ResistanceExerciseRecord
-  | CardioExerciseRecord
-  | PlaceholderRecord;
+export type ExerciseRecord = ResistanceExerciseRecord | CardioExerciseRecord;
 
 export interface BaseExercise {
   id: string;
@@ -34,7 +31,7 @@ export interface BaseExercise {
   type: "resistance" | "cardio" | "placeholder";
 }
 
-interface ResistanceExerciseRecord extends BaseExercise {
+export interface ResistanceExerciseRecord extends BaseExercise {
   type: "resistance";
   sets: {
     setNumber: number;
@@ -43,23 +40,12 @@ interface ResistanceExerciseRecord extends BaseExercise {
   }[];
 }
 
-interface CardioExerciseRecord extends BaseExercise {
+export interface CardioExerciseRecord extends BaseExercise {
   type: "cardio";
   specific: SpecificCardio;
-
 }
 
-interface PlaceholderRecord extends BaseExercise {
-
-}
-
-type SpecificCardio =
-  | CustomCardio
-  | Treadmill
-  | StationaryBike
-  | RowingMachine
-  | StairClimber
-  | Elliptical
+type SpecificCardio = CustomCardio | Treadmill | StationaryBike | RowingMachine | StairClimber | Elliptical;
 
 interface CustomCardio {
   customName: string;

@@ -9,7 +9,6 @@ const EXERCISES = "exercises";
 // const API_URL = "http://192.168.1.223:5678/";
 const API_URL = "http://localhost:5678/";
 
-
 export const getWorkoutPlan = async (id: number) => {
   try {
     const response = await axios.get(`${API_URL}${WORKOUTPLANS}/${id}`);
@@ -133,7 +132,6 @@ export const deleteWorkoutRecord = async (id: number) => {
   }
 };
 
-
 export default {
   getWorkoutPlan,
   getAllWorkoutPlans,
@@ -144,5 +142,5 @@ export default {
   getWorkoutRecord,
   createWorkoutRecord,
   updateWorkoutRecord,
-  deleteWorkoutRecord
+  deleteWorkoutRecord,
 };
