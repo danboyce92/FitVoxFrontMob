@@ -6,9 +6,13 @@ import CustomButton from "@/components/CustomButton";
 
 interface CardType {
   exerciseName: string;
+  exerciseIndex: number;
+  handleResisInputChange: (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => void;
+  addSet: (exerciseNo: number) => void;
+  removeSet: (exerciseNo: number) => void;
 }
 
-export default function SessionCard({ exerciseName }: CardType) {
+export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet, removeSet }: CardType) {
   const [additionalSets, setAdditionalSets] = useState<number[]>([]);
   const [hideButton, setHideButton] = useState(false);
 
@@ -17,10 +21,12 @@ export default function SessionCard({ exerciseName }: CardType) {
   };
   const handleAddSet = () => {
     addNewSet();
+    addSet(exerciseIndex);
     setHideButton(true);
   };
   const handleRemoveSet = () => {
     setAdditionalSets((prev) => prev.slice(0, -1));
+    removeSet(exerciseIndex);
   };
   const handleMainAddSetButton = () => {
     if (additionalSets.length < 1) {
@@ -41,9 +47,9 @@ export default function SessionCard({ exerciseName }: CardType) {
 
       <View style={styles.set}>
         <Text>Reps:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
+        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} />
         <Text>Weight:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
+        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}} />
       </View>
 
       <View
@@ -59,10 +65,12 @@ export default function SessionCard({ exerciseName }: CardType) {
         <AdditionalSet
           key={index}
           index={index}
-          setNumber={index + 2}
+          exerciseIndex={exerciseIndex}
+          setNumber={index+1}
           addSet={addNewSet}
           removeSet={handleRemoveSet}
           setLength={additionalSets.length}
+          handleResisInputChange={handleResisInputChange}
         />
       ))}
     </View>

@@ -5,12 +5,14 @@ import CustomButton from "@/components/CustomButton";
 interface CardType {
   index: number;
   setNumber: number;
+  exerciseIndex: number;
   addSet: () => void;
   removeSet: () => void;
   setLength: number;
+  handleResisInputChange: (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => void;
 }
 
-export default function AdditionalSet({ index, setNumber, addSet, removeSet, setLength }: CardType) {
+export default function AdditionalSet({ index, setNumber, exerciseIndex, addSet, removeSet, setLength, handleResisInputChange }: CardType) {
   const isLastSet = index === setLength - 1;
 
   const handleAddSetButton = () => {
@@ -19,13 +21,13 @@ export default function AdditionalSet({ index, setNumber, addSet, removeSet, set
 
   return (
     <View style={styles.card}>
-      <Text style={styles.cardTitle}>Set {setNumber}</Text>
+      <Text style={styles.cardTitle}>Set {setNumber+1}</Text>
       <View style={styles.set}>
         <Text>Reps:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
+        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} onChangeText={(text) => {handleResisInputChange(exerciseIndex, setNumber, 'reps', Number(text))}} />
 
         <Text>Weight:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} />
+        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} onChangeText={(text) => {handleResisInputChange(exerciseIndex, setNumber, 'weight', Number(text))}} />
       </View>
 
       <View

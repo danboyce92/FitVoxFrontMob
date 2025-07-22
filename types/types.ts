@@ -42,62 +42,22 @@ export interface ResistanceExerciseRecord extends BaseExercise {
 
 export interface CardioExerciseRecord extends BaseExercise {
   type: "cardio";
-  specific: SpecificCardio;
-}
-
-type SpecificCardio = CustomCardio | Treadmill | StationaryBike | RowingMachine | StairClimber | Elliptical;
-
-interface CustomCardio {
-  customName: string;
-  metrics: Record<string, number | string>;
-}
-
-interface Treadmill {
-  metrics: {
-    durationMinutes: number;
-    speedKmh?: number;
-    inclinePercent?: number;
-    distanceKm?: number;
-    caloriesBurned?: number;
+  specific: {
+    metrics: CardioMetrics;
   };
 }
 
-interface StationaryBike {
-  metrics: {
-    durationMinutes: number;
-    resistanceLevel?: number;
-    rpm?: number;
-    distanceKm?: number;
-    caloriesBurned?: number;
-  };
-}
-
-interface RowingMachine {
-  metrics: {
-    durationMinutes: number;
-    strokesPerMinute?: number;
-    distanceMeters?: number;
-    averageSplitTime?: string; // e.g. "2:05/500m"
-    caloriesBurned?: number;
-  };
-}
-
-interface StairClimber {
-  metrics: {
-    durationMinutes: number;
-    floorsClimbed?: number;
-    stepRate?: number; // steps per minute
-    resistanceLevel?: number;
-    caloriesBurned?: number;
-  };
-}
-
-interface Elliptical {
-  metrics: {
-    durationMinutes: number;
-    resistanceLevel?: number;
-    stridesPerMinute?: number;
-    distanceKm?: number;
-    caloriesBurned?: number;
-  };
+export interface CardioMetrics {
+  durationMinutes: number;
+  distanceKm?: number;
+  caloriesBurned?: number;
+  speedKmh?: number;
+  inclinePercent?: number;
+  resistanceLevel?: number;
+  rpm?: number;
+  strokesPerMinute?: number;
+  averageSplitTime?: string; // e.g. "2:05/500m"
+  floorsClimbed?: number;
+  stepRate?: number; // steps per minute
+  stridesPerMinute?: number;
 }

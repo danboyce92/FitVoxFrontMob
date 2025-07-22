@@ -45,3 +45,6 @@ Finished with initial layout, can now move on to setting up a basic way of stori
 ## 18-06
 Basic structure for Record Workout section built.
 - Now I need to have it persist the data. 
+
+## 21-07
+Session makes successful record of additional sets but the removeSet function deletes more than it should have should be addressed

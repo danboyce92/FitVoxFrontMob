@@ -19,7 +19,7 @@ export default function Session() {
         id: exercise.id,
         name: exercise.name,
         type: "resistance",
-        sets: [],
+        sets: [{ setNumber: 1, reps: 0, weight: 0 }],
       } satisfies ResistanceExerciseRecord;
     } else {
       return {
@@ -27,8 +27,9 @@ export default function Session() {
         name: exercise.name,
         type: "cardio",
         specific: {
-          customName: exercise.name,
-          metrics: {},
+          metrics: {
+            durationMinutes: 0,
+          },
         },
       } satisfies CardioExerciseRecord;
     }
@@ -62,20 +63,77 @@ export default function Session() {
     }
   };
 
-  const updateExerciseSet = (exerciseId: string, setNumber: number, reps: number, weight: number) => {
-    setExerciseRecords((prevRecords) =>
-      prevRecords.map((record) => {
-        if (record.id === exerciseId && record.type === "resistance") {
-          const newSets = [...record.sets];
-          newSets[setNumber - 1] = { setNumber, reps, weight };
+const handleResisInputChange = (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => {
+  setWorkoutData((prevWorkoutData) => {
+    if (!prevWorkoutData) return prevWorkoutData;
 
-          return { ...record, sets: newSets };
+    return {
+      ...prevWorkoutData,
+      exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
+        if (exercise.type === "resistance" && i === exerciseNo) {
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set, j) => {
+              if (j === setNo) {
+                return { ...set, [property]: value }; // Dynamic update
+              }
+              return set;
+            }),
+          };
         }
+        return exercise;
+      }),
+    };
+  });
+};
 
-        return record;
-      })
-    );
+//Create a method that adds a set object to the set array in the workoutData,
+//This should get triggered when the addSet button is hit in the card component.
+//Also create a method that removes the last set from the workoutData,
+//This should get triggered by the removeSet button
+
+const addSetToData = (exerciseNo: number) => {
+setWorkoutData((prevWorkoutData) => {
+  if (!prevWorkoutData) return prevWorkoutData;
+
+  return {
+    ...prevWorkoutData,
+    exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
+      if (exercise.type === "resistance" && i === exerciseNo) {
+        return {
+          ...exercise,
+          sets: [
+            ...exercise.sets,
+            { setNumber: exercise.sets.length + 1, weight: 0, reps: 0 }
+          ],
+        };
+      }
+      return exercise;
+    }),
   };
+});
+}
+
+const removeSetFromData = (exerciseNo: number) => {
+  setWorkoutData((prevWorkoutData) => {
+    if (!prevWorkoutData) return prevWorkoutData;
+
+    return {
+      ...prevWorkoutData,
+      exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
+        if (exercise.type === "resistance" && i === exerciseNo) {
+          return {
+            ...exercise,
+            sets: exercise.sets.slice(0, -1), // Remove last set
+          };
+        }
+        return exercise;
+      }),
+    };
+  });
+};
+
+
 
   useEffect(() => {
     handleSetUpWorkoutData();
@@ -86,7 +144,7 @@ export default function Session() {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{currentWorkoutPlan.name}</Text>
         {currentWorkoutPlan.exercises.map((_, index) => (
-          <SessionCard key={index} exerciseName={currentWorkoutPlan.exercises[index].name} />
+          <SessionCard key={index} exerciseIndex={index} exerciseName={currentWorkoutPlan.exercises[index].name} handleResisInputChange={handleResisInputChange} addSet={addSetToData} removeSet={removeSetFromData} />
         ))}
       </ScrollView>
       <View style={styles.footer}>
