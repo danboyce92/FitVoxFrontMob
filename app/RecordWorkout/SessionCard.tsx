@@ -9,10 +9,9 @@ interface CardType {
   exerciseIndex: number;
   handleResisInputChange: (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => void;
   addSet: (exerciseNo: number) => void;
-  removeSet: (exerciseNo: number) => void;
 }
 
-export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet, removeSet }: CardType) {
+export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet }: CardType) {
   const [additionalSets, setAdditionalSets] = useState<number[]>([]);
   const [hideButton, setHideButton] = useState(false);
 
@@ -26,7 +25,6 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
   };
   const handleRemoveSet = () => {
     setAdditionalSets((prev) => prev.slice(0, -1));
-    removeSet(exerciseIndex);
   };
   const handleMainAddSetButton = () => {
     if (additionalSets.length < 1) {

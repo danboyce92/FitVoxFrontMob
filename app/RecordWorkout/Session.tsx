@@ -114,24 +114,24 @@ setWorkoutData((prevWorkoutData) => {
 });
 }
 
-const removeSetFromData = (exerciseNo: number) => {
-  setWorkoutData((prevWorkoutData) => {
-    if (!prevWorkoutData) return prevWorkoutData;
+// const removeSetFromData = (exerciseNo: number) => {
+//   // setWorkoutData((prevWorkoutData) => {
+//   //   if (!prevWorkoutData) return prevWorkoutData;
 
-    return {
-      ...prevWorkoutData,
-      exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
-        if (exercise.type === "resistance" && i === exerciseNo) {
-          return {
-            ...exercise,
-            sets: exercise.sets.slice(0, -1), // Remove last set
-          };
-        }
-        return exercise;
-      }),
-    };
-  });
-};
+//   //   return {
+//   //     ...prevWorkoutData,
+//   //     exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
+//   //       if (exercise.type === "resistance" && i === exerciseNo) {
+//   //         return {
+//   //           ...exercise,
+//   //           sets: exercise.sets.slice(0, -1), // Remove last set
+//   //         };
+//   //       }
+//   //       return exercise;
+//   //     }),
+//   //   };
+//   // });
+// };
 
 
 
@@ -144,7 +144,7 @@ const removeSetFromData = (exerciseNo: number) => {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{currentWorkoutPlan.name}</Text>
         {currentWorkoutPlan.exercises.map((_, index) => (
-          <SessionCard key={index} exerciseIndex={index} exerciseName={currentWorkoutPlan.exercises[index].name} handleResisInputChange={handleResisInputChange} addSet={addSetToData} removeSet={removeSetFromData} />
+          <SessionCard key={index} exerciseIndex={index} exerciseName={currentWorkoutPlan.exercises[index].name} handleResisInputChange={handleResisInputChange} addSet={addSetToData} />
         ))}
       </ScrollView>
       <View style={styles.footer}>

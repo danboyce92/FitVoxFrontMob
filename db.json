@@ -367,38 +367,7 @@
           ]
         }
       ]
-    },
-    {
-      "id": "6",
-      "name": "Leg Day 6",
-      "date": "2025-07-21T15:04:15.845Z",
-      "duration": 0,
-      "exerciseRecords": [
-        {
-          "id": "1",
-          "name": "Squats",
-          "type": "resistance",
-          "sets": [
-            {
-              "setNumber": 1,
-              "reps": 10,
-              "weight": 50
-            }
-          ]
-        },
-        {
-          "id": "2",
-          "name": "Lunges",
-          "type": "resistance",
-          "sets": [
-            {
-              "setNumber": 1,
-              "reps": 25,
-              "weight": 0
-            }
-          ]
-        }
-      ]
     }
+
   ]
 }
