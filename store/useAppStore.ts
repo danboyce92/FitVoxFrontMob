@@ -15,6 +15,7 @@ interface AppStore {
   setExercise: (exercise: Exercise) => void;
   setExercises: (exercises: Exercise[]) => void;
   setLoading: (loading: boolean) => void;
+
 }
 
 export const planPlaceholder: WorkoutPlan = {

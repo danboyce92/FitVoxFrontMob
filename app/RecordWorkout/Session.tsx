@@ -6,12 +6,14 @@ import { createWorkoutRecord, getAllWorkoutRecords } from "@/app/api";
 import CustomButton from "@/components/CustomButton";
 import useAppStore from "@/store/useAppStore";
 import { CardioExerciseRecord, Exercise, ExerciseRecord, ResistanceExerciseRecord, WorkoutRecord } from "@/types/types";
+import { useRouter } from "expo-router";
 
 export default function Session() {
-  const [recordID, setRecordID] = useState(0);
-  const [workoutData, setWorkoutData] = useState<WorkoutRecord | null>(null);
-  const [exerciseRecords, setExerciseRecords] = useState<ExerciseRecord[]>([]);
-  const { currentWorkoutPlan, setCurrentWorkoutRecord } = useAppStore();
+  const router = useRouter();
+  // const [recordID, setRecordID] = useState(0);
+  // const [workoutData, setWorkoutData] = useState<WorkoutRecord | null>(null);
+  // const [exerciseRecords, setExerciseRecords] = useState<ExerciseRecord[]>([]);
+  const { currentWorkoutPlan, currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
 
   const exerciseTypeCheck = (exercise: Exercise) => {
     if (exercise.type === "resistance") {
@@ -44,7 +46,7 @@ export default function Session() {
         return exerciseTypeCheck(exercise);
       });
 
-      setExerciseRecords(initialRecords);
+      // setExerciseRecords(initialRecords);
 
       const newWorkoutData: WorkoutRecord = {
         id: newRecordID.toString(),
@@ -54,38 +56,65 @@ export default function Session() {
         exerciseRecords: initialRecords,
       };
 
-      setWorkoutData(newWorkoutData);
+      // setWorkoutData(newWorkoutData);
       setCurrentWorkoutRecord(newWorkoutData);
-      setRecordID(newRecordID);
+      // setRecordID(newRecordID);
     } catch (error) {
       console.error("Error fetching workout records:", error);
       throw error;
     }
   };
 
-const handleResisInputChange = (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => {
-  setWorkoutData((prevWorkoutData) => {
-    if (!prevWorkoutData) return prevWorkoutData;
+// const handleResisInputChange = (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => {
+//   // setWorkoutData((prevWorkoutData) => {
+//   setCurrentWorkoutRecord((prevWorkoutData: WorkoutRecord) => {
+//     if (!prevWorkoutData) return prevWorkoutData;
 
-    return {
-      ...prevWorkoutData,
-      exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
-        if (exercise.type === "resistance" && i === exerciseNo) {
-          return {
-            ...exercise,
-            sets: exercise.sets.map((set, j) => {
-              if (j === setNo) {
-                return { ...set, [property]: value }; // Dynamic update
-              }
-              return set;
-            }),
-          };
-        }
-        return exercise;
-      }),
-    };
-  });
-};
+//     return {
+//       ...prevWorkoutData,
+//       exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
+//         if (exercise.type === "resistance" && i === exerciseNo) {
+//           return {
+//             ...exercise,
+//             sets: exercise.sets.map((set, j) => {
+//               if (j === setNo) {
+//                 return { ...set, [property]: value }; // Dynamic update
+//               }
+//               return set;
+//             }),
+//           };
+//         }
+//         return exercise;
+//       }),
+//     };
+//   });
+// };
+
+//Need to recreate the method above to reflect the new structure
+const handleResisInputChange = (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => {
+    if (!currentWorkoutRecord) return;
+
+  const updatedRecord: WorkoutRecord = {
+    ...currentWorkoutRecord,
+    exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+      if (exercise.type === "resistance" && i === exerciseNo) {
+        return {
+          ...exercise,
+          sets: exercise.sets.map((set, j) => {
+            if (j === setNo) {
+              return { ...set, [property]: value }; // Dynamic update
+            }
+            return set;
+          }),
+        };
+      }
+      return exercise;    
+    }),
+  }
+  setCurrentWorkoutRecord(updatedRecord);
+}
+
+
 
 //Create a method that adds a set object to the set array in the workoutData,
 //This should get triggered when the addSet button is hit in the card component.
@@ -93,47 +122,26 @@ const handleResisInputChange = (exerciseNo: number, setNo: number, property: 're
 //This should get triggered by the removeSet button
 
 const addSetToData = (exerciseNo: number) => {
-setWorkoutData((prevWorkoutData) => {
-  if (!prevWorkoutData) return prevWorkoutData;
+  if (!currentWorkoutRecord) return;
 
-  return {
-    ...prevWorkoutData,
-    exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
+  const updatedRecord: WorkoutRecord = {
+    ...currentWorkoutRecord,
+    exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
       if (exercise.type === "resistance" && i === exerciseNo) {
         return {
           ...exercise,
           sets: [
             ...exercise.sets,
-            { setNumber: exercise.sets.length + 1, weight: 0, reps: 0 }
+            { setNumber: exercise.sets.length + 1, weight: 0, reps: 0 },
           ],
         };
       }
       return exercise;
     }),
   };
-});
-}
 
-// const removeSetFromData = (exerciseNo: number) => {
-//   // setWorkoutData((prevWorkoutData) => {
-//   //   if (!prevWorkoutData) return prevWorkoutData;
-
-//   //   return {
-//   //     ...prevWorkoutData,
-//   //     exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
-//   //       if (exercise.type === "resistance" && i === exerciseNo) {
-//   //         return {
-//   //           ...exercise,
-//   //           sets: exercise.sets.slice(0, -1), // Remove last set
-//   //         };
-//   //       }
-//   //       return exercise;
-//   //     }),
-//   //   };
-//   // });
-// };
-
-
+  setCurrentWorkoutRecord(updatedRecord);
+};
 
   useEffect(() => {
     handleSetUpWorkoutData();
@@ -144,15 +152,19 @@ setWorkoutData((prevWorkoutData) => {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{currentWorkoutPlan.name}</Text>
         {currentWorkoutPlan.exercises.map((_, index) => (
-          <SessionCard key={index} exerciseIndex={index} exerciseName={currentWorkoutPlan.exercises[index].name} handleResisInputChange={handleResisInputChange} addSet={addSetToData} />
+          <SessionCard key={index} exerciseIndex={index} exerciseName={currentWorkoutPlan.exercises[index].name} 
+          handleResisInputChange={handleResisInputChange} 
+          addSet={addSetToData} 
+          />
         ))}
       </ScrollView>
       <View style={styles.footer}>
         <CustomButton
           title="Finish Workout"
           onPress={() => {
-            if (workoutData) {
-              createWorkoutRecord(workoutData);
+            if (currentWorkoutRecord) {
+              createWorkoutRecord(currentWorkoutRecord);
+              router.push("/")
             } else {
               console.warn("Workout data not initialized yet.");
             }

@@ -48,3 +48,24 @@ Basic structure for Record Workout section built.
 
 ## 21-07
 Session makes successful record of additional sets but the removeSet function deletes more than it should have should be addressed
+
+## 23-07
+Figure out where to go next. Resistance records now saving properly.
+Next problems to tackle
+-Cardio type records being saved properly
+-Setting up Flask project to manipulate data
+-Decide what kind of ways to present data. Graphs etc..
+-User Authentication
+-GPT Speech to Text functionality
+
+## 28-08
+Big mess, lots of moving pieces. Considering deleting a lot and starting again. Workout record section anyways
+
+## 29-08
+Commented out a lot, building up from scratch. Add set now working and updating the finished record.
+Can't focus on the remove set button until the ui can visually represent the additional sets.
+Focus on getting the UI to update sets now,
+Then focus remove set functionality 
+Then focus dynamic input field updating 
+
+UI now updates,

@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import AdditionalSet from "./AdditionalSet";
+import useAppStore from "@/store/useAppStore";
 
 import CustomButton from "@/components/CustomButton";
+import { WorkoutRecord } from "@/types/types";
 
 interface CardType {
   exerciseName: string;
@@ -12,29 +14,63 @@ interface CardType {
 }
 
 export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet }: CardType) {
-  const [additionalSets, setAdditionalSets] = useState<number[]>([]);
+  const [additionalSets, setAdditionalSets] = useState(0);
   const [hideButton, setHideButton] = useState(false);
 
-  const addNewSet = () => {
-    setAdditionalSets((prev) => [...prev, prev.length + 1]);
-  };
+    const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
+
+  // const addNewSet = () => {
+  //   setAdditionalSets((prev) => [...prev, prev.length + 1]);
+  // };
   const handleAddSet = () => {
-    addNewSet();
+    // addNewSet();
     addSet(exerciseIndex);
     setHideButton(true);
   };
-  const handleRemoveSet = () => {
-    setAdditionalSets((prev) => prev.slice(0, -1));
-  };
-  const handleMainAddSetButton = () => {
-    if (additionalSets.length < 1) {
-      setHideButton(false);
-    }
-  };
+  // const handleRemoveSet = () => {
+  //   setAdditionalSets((prev) => prev.slice(0, -1));
+  // };
+  // const handleMainAddSetButton = () => {
+  //   if (additionalSets < 0) {
+  //     setHideButton(false);
+  //   }
+  // };
+
+  const removeLastSet = () => {
+    if (!currentWorkoutRecord) return;
+    if (currentWorkoutRecord.exerciseRecords[exerciseIndex].type !== "resistance" ) console.log("ERROR:Not a resistance exercise");
+
+    const updatedRecord: WorkoutRecord = {
+      ...currentWorkoutRecord,
+      exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+        if (exercise.type === "resistance" && i === exerciseIndex) {
+          return {
+            ...exercise,
+            sets: exercise.sets.slice(0, -1), // Remove the last set
+          };
+        }
+        return exercise;
+      }),
+    };
+    setAdditionalSets(additionalSets - 1);
+    setCurrentWorkoutRecord(updatedRecord);
+  }
+
+  const updateSetsAmount = () => {
+    setAdditionalSets(currentWorkoutRecord.exerciseRecords[exerciseIndex]?.type === 'resistance' ? currentWorkoutRecord.exerciseRecords[exerciseIndex].sets.length - 1 : 0);
+  }
+
+  // const createAdditionalSetsArray = (exerciseIndex: number) => {
+    
+  // }
+
+  // useEffect(() => {
+  //   handleMainAddSetButton();
+  // }, [currentWorkoutRecord]);
 
   useEffect(() => {
-    handleMainAddSetButton();
-  }, [additionalSets]);
+    updateSetsAmount();
+  }, [currentWorkoutRecord]);
 
   return (
     <View style={styles.card}>
@@ -45,21 +81,25 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
 
       <View style={styles.set}>
         <Text>Reps:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} />
+        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
+        onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} 
+        />
         <Text>Weight:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}} />
+        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
+        onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}}
+         />
       </View>
 
-      <View
-        style={[
-          styles.addSetBtnWrapper,
-          hideButton && styles.hidden, // apply hidden style if toggled
-        ]}
-      >
-        <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
-      </View>
+<View
+  style={[
+    styles.addSetBtnWrapper,
+    additionalSets > 0 && styles.hidden, // hide if there are additional sets
+  ]}
+>
+  <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
+</View>
 
-      {additionalSets.map((_, index) => (
+      {/* {additionalSets.map((_, index) => (
         <AdditionalSet
           key={index}
           index={index}
@@ -70,7 +110,27 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
           setLength={additionalSets.length}
           handleResisInputChange={handleResisInputChange}
         />
-      ))}
+      ))} */}
+
+      {
+        currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === 'resistance' &&
+        Array.from({ length: additionalSets }, (_, i) => i + 2).map((setNum, idx) => (
+          <AdditionalSet
+            key={idx}
+            index={idx}
+            exerciseIndex={exerciseIndex}
+            setNumber={setNum}
+            addSet={handleAddSet}
+            removeSet={removeLastSet}
+            // removeSet={handleRemoveSet}
+            // setLength={additionalSets}
+            handleResisInputChange={handleResisInputChange}
+          />
+        ))
+      }
+
+
+
     </View>
   );
 }
