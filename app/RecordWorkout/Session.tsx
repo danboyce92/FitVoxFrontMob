@@ -9,6 +9,7 @@ import { ExerciseRecord, WorkoutRecord } from "@/types/types";
 import { useRouter } from "expo-router";
 import { exerciseTypeCheck } from "./exerciseTypeCheck";
 
+
 export default function Session() {
   const router = useRouter();
   const { currentWorkoutPlan, currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();

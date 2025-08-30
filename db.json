@@ -59,6 +59,24 @@
           "type": "resistance"
         }
       ]
+    },
+    {
+      "id": "3",
+      "name": "Mixed",
+      "exercises": [
+        {
+          "id": "13",
+          "name": "Treadmill",
+          "category": "cardio",
+          "type": "cardio"
+        },
+        {
+          "id": "2",
+          "name": "Bench Press",
+          "category": "Chest",
+          "type": "resistance"
+        }
+      ]
     }
   ],
   "exercises": [
@@ -133,6 +151,18 @@
       "name": "Front Raise",
       "category": "Shoulders",
       "type": "resistance"
+    },
+    {
+      "id": "13",
+      "name": "Treadmill",
+      "category": "cardio",
+      "type": "cardio"
+    },
+    {
+      "id": "14",
+      "name": "Bike",
+      "category": "cardio",
+      "type": "cardio"
     }
   ],
   "workout-records": [

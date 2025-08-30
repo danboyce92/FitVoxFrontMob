@@ -6,6 +6,7 @@ import useAppStore from "@/store/useAppStore";
 import CustomButton from "@/components/CustomButton";
 import { WorkoutRecord } from "@/types/types";
 
+
 interface CardType {
   exerciseName: string;
   exerciseIndex: number;
@@ -16,6 +17,8 @@ interface CardType {
 export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet }: CardType) {
   const [additionalSets, setAdditionalSets] = useState(0);
   const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
+
+  const exType = currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type;
 
   const handleAddSet = () => {
     addSet(exerciseIndex);
@@ -49,52 +52,82 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
     updateSetsAmount();
   }, [currentWorkoutRecord]);
 
-return (
-  <View style={styles.card}>
-    <View style={styles.header}>
-      <Text style={styles.cardTitle}>{exerciseName}</Text>
-      <Text>Set 1</Text>
-    </View>
+  if (exType === "cardio") {
+    return (
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Text style={styles.cardTitle}>{exerciseName}</Text>
+        </View>
 
-    <View style={styles.set}>
-      <Text>Reps:</Text>
-      <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
-      onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} 
-      />
-      <Text>Weight:</Text>
-      <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
-      onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}}
-        />
-    </View>
+        <View style={styles.durationBox}>
+          <Text style={styles.durationText}>Duration:</Text>
+          <View>
+            <Text style={styles.durationKey}><i>Min</i></Text>
+            <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} />
+          </View>
+          <View>
+            <Text style={styles.durationKey}><i>Sec</i></Text>
+            <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} />
+          </View>
+        </View>
 
-    <View
-      style={[
-        styles.addSetBtnWrapper,
-        additionalSets > 0 && styles.hidden, // hide if there are additional sets
-      ]}
-    >
-      <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
-    </View>
+        <View style={styles.addSetBtnWrapper}>
+          <CustomButton title="Add metric" variant="secondary" onPress={() => {console.log("PLACEHOLDER")}} />
+        </View>
 
-    {
-      currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === 'resistance' &&
-      Array.from({ length: additionalSets }, (_, i) => i + 2).map((setNum, idx) => (
-        <AdditionalSet
-          key={idx}
-          index={idx}
-          exerciseIndex={exerciseIndex}
-          setNumber={setNum}
-          addSet={handleAddSet}
-          removeSet={removeLastSet}
-          // removeSet={handleRemoveSet}
-          // setLength={additionalSets}
-          handleResisInputChange={handleResisInputChange}
-        />
-      ))
-    }
-  </View>
-  );
-}
+      </View>
+      );
+  }
+
+    if (exType === "resistance") {
+    return (
+      <View style={styles.card}>
+        <View style={styles.header}>
+          <Text style={styles.cardTitle}>{exerciseName}</Text>
+          <Text>Set 1</Text>
+        </View>
+
+        <View style={styles.set}>
+          <Text>Reps:</Text>
+          <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
+          onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} 
+          />
+          <Text>Weight:</Text>
+          <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
+          onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}}
+            />
+        </View>
+
+        <View
+          style={[
+            styles.addSetBtnWrapper,
+            additionalSets > 0 && styles.hidden, // hide if there are additional sets
+          ]}
+        >
+          <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
+        </View>
+
+        {
+          currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === 'resistance' &&
+          Array.from({ length: additionalSets }, (_, i) => i + 2).map((setNum, idx) => (
+            <AdditionalSet
+              key={idx}
+              index={idx}
+              exerciseIndex={exerciseIndex}
+              setNumber={setNum}
+              addSet={handleAddSet}
+              removeSet={removeLastSet}
+              // removeSet={handleRemoveSet}
+              // setLength={additionalSets}
+              handleResisInputChange={handleResisInputChange}
+            />
+          ))
+        }
+      </View>
+      );
+  }
+
+  }
 
 const styles = StyleSheet.create({
   card: {
@@ -102,6 +135,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#ddd",
     borderRadius: 8,
+    margin: "auto",
+    minWidth: 280,
     marginBottom: 12,
     backgroundColor: "#fff",
   },
@@ -125,7 +160,7 @@ const styles = StyleSheet.create({
     borderColor: "#ccc",
     borderRadius: 4,
     padding: 8,
-    minWidth: 60,
+    maxWidth: 60,
     marginHorizontal: 4,
   },
   addSetBtnWrapper: {
@@ -136,5 +171,24 @@ const styles = StyleSheet.create({
   hidden: {
     opacity: 0,
     pointerEvents: "none",
+  },
+  durationText:{
+    alignContent: "center",
+    transform: [{ translateY: 6 }],
+  },
+  durationKey:{
+    textAlign: "center",
+  },
+  durationBox: {
+    flexDirection: "row",
+    margin: "auto",
+  },
+  inputCar: {
+    borderWidth: 1,
+    borderColor: "#ccc",
+    borderRadius: 4,
+    padding: 8,
+    marginHorizontal: 4,
+    maxWidth: 60,
   },
 });
