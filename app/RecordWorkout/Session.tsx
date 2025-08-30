@@ -1,41 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import SessionCard from "./SessionCard";
 
 import { createWorkoutRecord, getAllWorkoutRecords } from "@/app/api";
 import CustomButton from "@/components/CustomButton";
 import useAppStore from "@/store/useAppStore";
-import { CardioExerciseRecord, Exercise, ExerciseRecord, ResistanceExerciseRecord, WorkoutRecord } from "@/types/types";
+import { ExerciseRecord, WorkoutRecord } from "@/types/types";
 import { useRouter } from "expo-router";
+import { exerciseTypeCheck } from "./exerciseTypeCheck";
 
 export default function Session() {
   const router = useRouter();
-  // const [recordID, setRecordID] = useState(0);
-  // const [workoutData, setWorkoutData] = useState<WorkoutRecord | null>(null);
-  // const [exerciseRecords, setExerciseRecords] = useState<ExerciseRecord[]>([]);
   const { currentWorkoutPlan, currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
-
-  const exerciseTypeCheck = (exercise: Exercise) => {
-    if (exercise.type === "resistance") {
-      return {
-        id: exercise.id,
-        name: exercise.name,
-        type: "resistance",
-        sets: [{ setNumber: 1, reps: 0, weight: 0 }],
-      } satisfies ResistanceExerciseRecord;
-    } else {
-      return {
-        id: exercise.id,
-        name: exercise.name,
-        type: "cardio",
-        specific: {
-          metrics: {
-            durationMinutes: 0,
-          },
-        },
-      } satisfies CardioExerciseRecord;
-    }
-  };
 
   const handleSetUpWorkoutData = async () => {
     try {
@@ -46,8 +22,6 @@ export default function Session() {
         return exerciseTypeCheck(exercise);
       });
 
-      // setExerciseRecords(initialRecords);
-
       const newWorkoutData: WorkoutRecord = {
         id: newRecordID.toString(),
         name: `${currentWorkoutPlan.name} ${newRecordID}`,
@@ -56,43 +30,15 @@ export default function Session() {
         exerciseRecords: initialRecords,
       };
 
-      // setWorkoutData(newWorkoutData);
       setCurrentWorkoutRecord(newWorkoutData);
-      // setRecordID(newRecordID);
     } catch (error) {
       console.error("Error fetching workout records:", error);
       throw error;
     }
   };
 
-// const handleResisInputChange = (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => {
-//   // setWorkoutData((prevWorkoutData) => {
-//   setCurrentWorkoutRecord((prevWorkoutData: WorkoutRecord) => {
-//     if (!prevWorkoutData) return prevWorkoutData;
-
-//     return {
-//       ...prevWorkoutData,
-//       exerciseRecords: prevWorkoutData.exerciseRecords.map((exercise, i) => {
-//         if (exercise.type === "resistance" && i === exerciseNo) {
-//           return {
-//             ...exercise,
-//             sets: exercise.sets.map((set, j) => {
-//               if (j === setNo) {
-//                 return { ...set, [property]: value }; // Dynamic update
-//               }
-//               return set;
-//             }),
-//           };
-//         }
-//         return exercise;
-//       }),
-//     };
-//   });
-// };
-
-//Need to recreate the method above to reflect the new structure
 const handleResisInputChange = (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => {
-    if (!currentWorkoutRecord) return;
+  if (!currentWorkoutRecord) return;
 
   const updatedRecord: WorkoutRecord = {
     ...currentWorkoutRecord,
@@ -113,13 +59,6 @@ const handleResisInputChange = (exerciseNo: number, setNo: number, property: 're
   }
   setCurrentWorkoutRecord(updatedRecord);
 }
-
-
-
-//Create a method that adds a set object to the set array in the workoutData,
-//This should get triggered when the addSet button is hit in the card component.
-//Also create a method that removes the last set from the workoutData,
-//This should get triggered by the removeSet button
 
 const addSetToData = (exerciseNo: number) => {
   if (!currentWorkoutRecord) return;

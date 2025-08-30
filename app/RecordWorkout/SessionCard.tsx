@@ -15,26 +15,11 @@ interface CardType {
 
 export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet }: CardType) {
   const [additionalSets, setAdditionalSets] = useState(0);
-  const [hideButton, setHideButton] = useState(false);
+  const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
 
-    const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
-
-  // const addNewSet = () => {
-  //   setAdditionalSets((prev) => [...prev, prev.length + 1]);
-  // };
   const handleAddSet = () => {
-    // addNewSet();
     addSet(exerciseIndex);
-    setHideButton(true);
   };
-  // const handleRemoveSet = () => {
-  //   setAdditionalSets((prev) => prev.slice(0, -1));
-  // };
-  // const handleMainAddSetButton = () => {
-  //   if (additionalSets < 0) {
-  //     setHideButton(false);
-  //   }
-  // };
 
   const removeLastSet = () => {
     if (!currentWorkoutRecord) return;
@@ -60,78 +45,54 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
     setAdditionalSets(currentWorkoutRecord.exerciseRecords[exerciseIndex]?.type === 'resistance' ? currentWorkoutRecord.exerciseRecords[exerciseIndex].sets.length - 1 : 0);
   }
 
-  // const createAdditionalSetsArray = (exerciseIndex: number) => {
-    
-  // }
-
-  // useEffect(() => {
-  //   handleMainAddSetButton();
-  // }, [currentWorkoutRecord]);
-
   useEffect(() => {
     updateSetsAmount();
   }, [currentWorkoutRecord]);
 
-  return (
-    <View style={styles.card}>
-      <View style={styles.header}>
-        <Text style={styles.cardTitle}>{exerciseName}</Text>
-        <Text>Set 1</Text>
-      </View>
+return (
+  <View style={styles.card}>
+    <View style={styles.header}>
+      <Text style={styles.cardTitle}>{exerciseName}</Text>
+      <Text>Set 1</Text>
+    </View>
 
-      <View style={styles.set}>
-        <Text>Reps:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
-        onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} 
+    <View style={styles.set}>
+      <Text>Reps:</Text>
+      <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
+      onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} 
+      />
+      <Text>Weight:</Text>
+      <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
+      onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}}
         />
-        <Text>Weight:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
-        onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}}
-         />
-      </View>
+    </View>
 
-<View
-  style={[
-    styles.addSetBtnWrapper,
-    additionalSets > 0 && styles.hidden, // hide if there are additional sets
-  ]}
->
-  <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
-</View>
+    <View
+      style={[
+        styles.addSetBtnWrapper,
+        additionalSets > 0 && styles.hidden, // hide if there are additional sets
+      ]}
+    >
+      <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
+    </View>
 
-      {/* {additionalSets.map((_, index) => (
+    {
+      currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === 'resistance' &&
+      Array.from({ length: additionalSets }, (_, i) => i + 2).map((setNum, idx) => (
         <AdditionalSet
-          key={index}
-          index={index}
+          key={idx}
+          index={idx}
           exerciseIndex={exerciseIndex}
-          setNumber={index+1}
-          addSet={addNewSet}
-          removeSet={handleRemoveSet}
-          setLength={additionalSets.length}
+          setNumber={setNum}
+          addSet={handleAddSet}
+          removeSet={removeLastSet}
+          // removeSet={handleRemoveSet}
+          // setLength={additionalSets}
           handleResisInputChange={handleResisInputChange}
         />
-      ))} */}
-
-      {
-        currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === 'resistance' &&
-        Array.from({ length: additionalSets }, (_, i) => i + 2).map((setNum, idx) => (
-          <AdditionalSet
-            key={idx}
-            index={idx}
-            exerciseIndex={exerciseIndex}
-            setNumber={setNum}
-            addSet={handleAddSet}
-            removeSet={removeLastSet}
-            // removeSet={handleRemoveSet}
-            // setLength={additionalSets}
-            handleResisInputChange={handleResisInputChange}
-          />
-        ))
-      }
-
-
-
-    </View>
+      ))
+    }
+  </View>
   );
 }
 

@@ -371,7 +371,7 @@
     {
       "id": "6",
       "name": "Leg Day 6",
-      "date": "2025-08-29T17:57:12.977Z",
+      "date": "2025-08-30T08:59:40.239Z",
       "duration": 0,
       "exerciseRecords": [
         {
@@ -391,7 +391,7 @@
             },
             {
               "setNumber": 3,
-              "weight": 65,
+              "weight": 70,
               "reps": 10
             }
           ]

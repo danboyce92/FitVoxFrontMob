@@ -68,4 +68,9 @@ Focus on getting the UI to update sets now,
 Then focus remove set functionality 
 Then focus dynamic input field updating 
 
-UI now updates,
+Seems to be working now, bug free!
+Do some more testing before moving on
+
+## 30-08
+Abstract resistance methods to their own file. 
+Start looking at how I should structure cardio exercises.

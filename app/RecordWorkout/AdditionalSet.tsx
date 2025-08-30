@@ -9,19 +9,12 @@ interface CardType {
   exerciseIndex: number;
   addSet: () => void;
   removeSet: () => void;
-  // removeSet: () => void;
-  // setLength: number;
   handleResisInputChange: (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => void;
 }
 
-export default function AdditionalSet({ index, setNumber, exerciseIndex, addSet, removeSet, handleResisInputChange
-  // removeSet, setLength, handleResisInputChange
- }: CardType) {
+export default function AdditionalSet({ setNumber, exerciseIndex, addSet, removeSet, handleResisInputChange }: CardType) {
   const { currentWorkoutRecord } = useAppStore();
   const [isLastSet, setIsLastSet] = useState(false);
-  // const isLastSet = index === currentWorkoutRecord.exerciseRecords[exerciseIndex].sets.length - 1;
-
-  //const isLastSet = setNumber === (currentWorkoutRecord.exerciseRecords[exerciseIndex].sets.length ?? 0) - 1;
 
   const handleAddSetButton = () => {
     addSet();
