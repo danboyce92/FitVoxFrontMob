@@ -100,14 +100,11 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
             />
         </View>
 
-        <View
-          style={[
-            styles.addSetBtnWrapper,
-            additionalSets > 0 && styles.hidden, // hide if there are additional sets
-          ]}
-        >
-          <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
-        </View>
+{additionalSets === 0 && (
+  <View style={styles.addSetBtnWrapper}>
+    <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
+  </View>
+)}
 
         {
           currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === 'resistance' &&
@@ -156,6 +153,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     marginBottom: 12,
+    borderColor: "rgba(0, 0, 0, .2)",
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 12,
   },
   input: {
     borderWidth: 1,
@@ -168,11 +169,12 @@ const styles = StyleSheet.create({
   addSetBtnWrapper: {
     alignItems: "center",
     margin: "auto",
-    marginVertical: 8,
+    marginVertical: 4,
   },
   hidden: {
     opacity: 0,
     pointerEvents: "none",
+    
   },
   durationText:{
     alignContent: "center",
@@ -184,6 +186,10 @@ const styles = StyleSheet.create({
   durationBox: {
     flexDirection: "row",
     margin: "auto",
+    borderColor: "rgba(0, 0, 0, .2)",
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 12,
   },
   inputCar: {
     borderWidth: 1,

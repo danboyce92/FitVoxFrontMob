@@ -35,7 +35,7 @@ export default function AdditionalSet({ setNumber, exerciseIndex, addSet, remove
   }, [currentWorkoutRecord]);
 
   return (
-    <View style={styles.card}>
+    <View>
       <Text style={styles.cardTitle}>Set {setNumber}</Text>
       <View style={styles.set}>
         <Text>Reps:</Text>
@@ -49,15 +49,12 @@ export default function AdditionalSet({ setNumber, exerciseIndex, addSet, remove
         />
       </View>
 
-      <View
-        style={[
-          styles.addSetBtnWrapper,
-          !isLastSet && styles.hidden, // hide if NOT the last set
-        ]}
-      >
-        <CustomButton title="Remove Set" variant="tertiary" onPress={handleRemoveSetButton} />
-        <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSetButton} />
-      </View>
+{isLastSet && (
+  <View style={styles.addSetBtnWrapper}>
+    <CustomButton title="Remove Set" variant="tertiary" onPress={handleRemoveSetButton} />
+    <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSetButton} />
+  </View>
+)}
     </View>
   );
 }
@@ -67,8 +64,7 @@ const styles = StyleSheet.create({
     padding: 16,
     marginVertical: 12,
     backgroundColor: "#fff",
-    alignSelf: "flex-end",
-    width: "90%",
+
   },
   cardTitle: {
     fontSize: 18,
@@ -80,19 +76,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
     marginBottom: 12,
+    borderColor: "rgba(0, 0, 0, .2)",
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 12,
   },
   input: {
     borderWidth: 1,
     borderColor: "#ccc",
     borderRadius: 4,
     padding: 8,
-    minWidth: 60,
+    maxWidth: 60,
     marginHorizontal: 4,
   },
   addSetBtnWrapper: {
     alignItems: "center",
     margin: "auto",
-    marginVertical: 8,
+    marginTop: 8,
     display: "flex",
     flexDirection: "row",
   },
