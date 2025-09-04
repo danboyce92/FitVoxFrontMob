@@ -1,14 +1,13 @@
 import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import { useRouter } from "expo-router";
+import { exerciseTypeCheck } from "./exerciseTypeCheck";
 import SessionCard from "./SessionCard";
 
 import { createWorkoutRecord, getAllWorkoutRecords } from "@/app/api";
 import CustomButton from "@/components/CustomButton";
 import useAppStore from "@/store/useAppStore";
 import { ExerciseRecord, WorkoutRecord } from "@/types/types";
-import { useRouter } from "expo-router";
-import { exerciseTypeCheck } from "./exerciseTypeCheck";
-
 
 export default function Session() {
   const router = useRouter();
@@ -39,50 +38,50 @@ export default function Session() {
     }
   };
 
-const handleResisInputChange = (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => {
-  if (!currentWorkoutRecord) return;
+  const handleResisInputChange = (exerciseNo: number, setNo: number, property: "reps" | "weight", value: number) => {
+    if (!currentWorkoutRecord) return;
 
-  const updatedRecord: WorkoutRecord = {
-    ...currentWorkoutRecord,
-    exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
-      if (exercise.type === "resistance" && i === exerciseNo) {
-        return {
-          ...exercise,
-          sets: exercise.sets.map((set, j) => {
-            if (j === setNo) {
-              return { ...set, [property]: value }; // Dynamic update
-            }
-            return set;
-          }),
-        };
-      }
-      return exercise;    
-    }),
-  }
-  setCurrentWorkoutRecord(updatedRecord);
-}
+    const updatedRecord: WorkoutRecord = {
+      ...currentWorkoutRecord,
+      exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+        if (exercise.type === "resistance" && i === exerciseNo) {
+          return {
+            ...exercise,
+            sets: exercise.sets.map((set, j) => {
+              if (j === setNo) {
+                return { ...set, [property]: value }; // Dynamic update
+              }
 
-const addSetToData = (exerciseNo: number) => {
-  if (!currentWorkoutRecord) return;
+              return set;
+            }),
+          };
+        }
 
-  const updatedRecord: WorkoutRecord = {
-    ...currentWorkoutRecord,
-    exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
-      if (exercise.type === "resistance" && i === exerciseNo) {
-        return {
-          ...exercise,
-          sets: [
-            ...exercise.sets,
-            { setNumber: exercise.sets.length + 1, weight: 0, reps: 0 },
-          ],
-        };
-      }
-      return exercise;
-    }),
+        return exercise;
+      }),
+    };
+    setCurrentWorkoutRecord(updatedRecord);
   };
 
-  setCurrentWorkoutRecord(updatedRecord);
-};
+  const addSetToData = (exerciseNo: number) => {
+    if (!currentWorkoutRecord) return;
+
+    const updatedRecord: WorkoutRecord = {
+      ...currentWorkoutRecord,
+      exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+        if (exercise.type === "resistance" && i === exerciseNo) {
+          return {
+            ...exercise,
+            sets: [...exercise.sets, { setNumber: exercise.sets.length + 1, weight: 0, reps: 0 }],
+          };
+        }
+
+        return exercise;
+      }),
+    };
+
+    setCurrentWorkoutRecord(updatedRecord);
+  };
 
   useEffect(() => {
     handleSetUpWorkoutData();
@@ -94,9 +93,12 @@ const addSetToData = (exerciseNo: number) => {
       <ScrollView contentContainerStyle={styles.container}>
         <Text style={styles.title}>{currentWorkoutPlan.name}</Text>
         {currentWorkoutPlan.exercises.map((_, index) => (
-          <SessionCard key={index} exerciseIndex={index} exerciseName={currentWorkoutPlan.exercises[index].name} 
-          handleResisInputChange={handleResisInputChange} 
-          addSet={addSetToData} 
+          <SessionCard
+            key={index}
+            exerciseIndex={index}
+            exerciseName={currentWorkoutPlan.exercises[index].name}
+            handleResisInputChange={handleResisInputChange}
+            addSet={addSetToData}
           />
         ))}
       </ScrollView>
@@ -112,13 +114,12 @@ const addSetToData = (exerciseNo: number) => {
           </Text>
         )}
 
-
         <CustomButton
           title="Finish Workout"
           onPress={() => {
             if (currentWorkoutRecord) {
               createWorkoutRecord(currentWorkoutRecord);
-              router.push("/")
+              router.push("/");
             } else {
               console.warn("Workout data not initialized yet.");
             }
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: "row",
-    justifyContent: "space-between" , 
+    justifyContent: "space-between",
     alignItems: "center",
     padding: 16,
     borderTopWidth: 1,

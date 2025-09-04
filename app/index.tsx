@@ -1,25 +1,24 @@
+import { useEffect, useState } from "react";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { useRouter } from "expo-router";
-import { useEffect, useState } from "react";
+import { getAllWorkoutRecords } from "./api";
 
 import useAppStore from "@/store/useAppStore";
 import { planPlaceholder } from "@/store/useAppStore";
-import { getAllWorkoutRecords } from "./api";
-
 
 export default function Home() {
   const router = useRouter();
-  const [ allWorkoutRecords, setAllWorkoutRecords ] = useState();
+  const [allWorkoutRecords, setAllWorkoutRecords] = useState();
   const { setWorkoutPlan } = useAppStore();
 
   const loadAllRecords = async () => {
     const records = await getAllWorkoutRecords();
     setAllWorkoutRecords(records);
-  }
+  };
 
   useEffect(() => {
-    loadAllRecords()
-  }, [])
+    loadAllRecords();
+  }, []);
 
   return (
     <View style={styles.buttonContainer}>

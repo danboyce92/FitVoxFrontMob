@@ -1,7 +1,8 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
 import { useEffect, useState } from "react";
-import useAppStore from "@/store/useAppStore";
+import { StyleSheet, Text, TextInput, View } from "react-native";
+
 import CustomButton from "@/components/CustomButton";
+import useAppStore from "@/store/useAppStore";
 
 interface CardType {
   index: number;
@@ -9,10 +10,16 @@ interface CardType {
   exerciseIndex: number;
   addSet: () => void;
   removeSet: () => void;
-  handleResisInputChange: (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => void;
+  handleResisInputChange: (exerciseNo: number, setNo: number, property: "reps" | "weight", value: number) => void;
 }
 
-export default function AdditionalSet({ setNumber, exerciseIndex, addSet, removeSet, handleResisInputChange }: CardType) {
+export default function AdditionalSet({
+  setNumber,
+  exerciseIndex,
+  addSet,
+  removeSet,
+  handleResisInputChange,
+}: CardType) {
   const { currentWorkoutRecord } = useAppStore();
   const [isLastSet, setIsLastSet] = useState(false);
 
@@ -25,10 +32,10 @@ export default function AdditionalSet({ setNumber, exerciseIndex, addSet, remove
   };
 
   const checkIfLastSet = () => {
-    if (currentWorkoutRecord.exerciseRecords[exerciseIndex].type === 'resistance') {
+    if (currentWorkoutRecord.exerciseRecords[exerciseIndex].type === "resistance") {
       setIsLastSet(setNumber === currentWorkoutRecord.exerciseRecords[exerciseIndex].sets.length);
     }
-  }
+  };
 
   useEffect(() => {
     checkIfLastSet();
@@ -39,22 +46,32 @@ export default function AdditionalSet({ setNumber, exerciseIndex, addSet, remove
       <Text style={styles.cardTitle}>Set {setNumber}</Text>
       <View style={styles.set}>
         <Text>Reps:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} 
-        onChangeText={(text) => {handleResisInputChange(exerciseIndex, setNumber-1, 'reps', Number(text))}} 
+        <TextInput
+          keyboardType="numeric"
+          placeholder="0"
+          style={styles.input}
+          onChangeText={(text) => {
+            handleResisInputChange(exerciseIndex, setNumber - 1, "reps", Number(text));
+          }}
         />
 
         <Text>Weight:</Text>
-        <TextInput keyboardType="numeric" placeholder="0" style={styles.input} 
-        onChangeText={(text) => {handleResisInputChange(exerciseIndex, setNumber-1, 'weight', Number(text))}} 
+        <TextInput
+          keyboardType="numeric"
+          placeholder="0"
+          style={styles.input}
+          onChangeText={(text) => {
+            handleResisInputChange(exerciseIndex, setNumber - 1, "weight", Number(text));
+          }}
         />
       </View>
 
-{isLastSet && (
-  <View style={styles.addSetBtnWrapper}>
-    <CustomButton title="Remove Set" variant="tertiary" onPress={handleRemoveSetButton} />
-    <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSetButton} />
-  </View>
-)}
+      {isLastSet && (
+        <View style={styles.addSetBtnWrapper}>
+          <CustomButton title="Remove Set" variant="tertiary" onPress={handleRemoveSetButton} />
+          <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSetButton} />
+        </View>
+      )}
     </View>
   );
 }
@@ -64,7 +81,6 @@ const styles = StyleSheet.create({
     padding: 16,
     marginVertical: 12,
     backgroundColor: "#fff",
-
   },
   cardTitle: {
     fontSize: 18,

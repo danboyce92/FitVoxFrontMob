@@ -1,21 +1,22 @@
 import { useEffect, useState } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import AdditionalSet from "./AdditionalSet";
-import useAppStore from "@/store/useAppStore";
 
 import CustomButton from "@/components/CustomButton";
+import useAppStore from "@/store/useAppStore";
 import { WorkoutRecord } from "@/types/types";
-
 
 interface CardType {
   exerciseName: string;
   exerciseIndex: number;
-  handleResisInputChange: (exerciseNo: number, setNo: number, property: 'reps' | 'weight', value: number) => void;
+  handleResisInputChange: (exerciseNo: number, setNo: number, property: "reps" | "weight", value: number) => void;
   addSet: (exerciseNo: number) => void;
 }
 
 export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet }: CardType) {
   const [additionalSets, setAdditionalSets] = useState(0);
+  const [selectedCardioMetric, setSelectedCardioMetric] = useState("Add Metric");
   const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
 
   const exType = currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type;
@@ -26,7 +27,8 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
 
   const removeLastSet = () => {
     if (!currentWorkoutRecord) return;
-    if (currentWorkoutRecord.exerciseRecords[exerciseIndex].type !== "resistance" ) console.log("ERROR:Not a resistance exercise");
+    if (currentWorkoutRecord.exerciseRecords[exerciseIndex].type !== "resistance")
+      console.log("ERROR:Not a resistance exercise");
 
     const updatedRecord: WorkoutRecord = {
       ...currentWorkoutRecord,
@@ -37,16 +39,21 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
             sets: exercise.sets.slice(0, -1), // Remove the last set
           };
         }
+
         return exercise;
       }),
     };
     setAdditionalSets(additionalSets - 1);
     setCurrentWorkoutRecord(updatedRecord);
-  }
+  };
 
   const updateSetsAmount = () => {
-    setAdditionalSets(currentWorkoutRecord.exerciseRecords[exerciseIndex]?.type === 'resistance' ? currentWorkoutRecord.exerciseRecords[exerciseIndex].sets.length - 1 : 0);
-  }
+    setAdditionalSets(
+      currentWorkoutRecord.exerciseRecords[exerciseIndex]?.type === "resistance"
+        ? currentWorkoutRecord.exerciseRecords[exerciseIndex].sets.length - 1
+        : 0
+    );
+  };
 
   useEffect(() => {
     updateSetsAmount();
@@ -63,25 +70,42 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
         <View style={styles.durationBox}>
           <Text style={styles.durationText}>Duration:</Text>
           <View>
-            <Text style={styles.durationKey}><i>Min</i></Text>
+            <Text style={styles.durationKey}>
+              <i>Min</i>
+            </Text>
             <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} />
           </View>
           <View>
-            <Text style={styles.durationKey}><i>Sec</i></Text>
+            <Text style={styles.durationKey}>
+              <i>Sec</i>
+            </Text>
             <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} />
           </View>
         </View>
 
-        <View style={styles.addSetBtnWrapper}>
-          <CustomButton title="Add metric" variant="secondary" onPress={() => {console.log("PLACEHOLDER")}} />
+        <View style={styles.addCarMetBtnWrapper}>
+          <Picker
+            selectedValue={selectedCardioMetric}
+            onValueChange={(itemValue) => setSelectedCardioMetric(itemValue)}
+            style={styles.picker}
+          >
+            <Picker.Item label="Distance" value="distance" />
+            <Picker.Item label="Incline" value="incline" />
+            <Picker.Item label="Calories" value="calories" />
+          </Picker>
+          <CustomButton
+            title="Add metric"
+            variant="secondary"
+            onPress={() => {
+              console.log("PLACEHOLDER");
+            }}
+          />
         </View>
-
       </View>
-      );
+    );
   }
-  
 
-    if (exType === "resistance") {
+  if (exType === "resistance") {
     return (
       <View style={styles.card}>
         <View style={styles.header}>
@@ -91,23 +115,32 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
 
         <View style={styles.set}>
           <Text>Reps:</Text>
-          <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
-          onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'reps', Number(text))}} 
+          <TextInput
+            keyboardType="numeric"
+            placeholder="0"
+            style={styles.input}
+            onChangeText={(text) => {
+              handleResisInputChange(exerciseIndex, 0, "reps", Number(text));
+            }}
           />
           <Text>Weight:</Text>
-          <TextInput keyboardType="numeric" placeholder="0" style={styles.input}  
-          onChangeText={(text) => {handleResisInputChange(exerciseIndex, 0, 'weight', Number(text))}}
-            />
+          <TextInput
+            keyboardType="numeric"
+            placeholder="0"
+            style={styles.input}
+            onChangeText={(text) => {
+              handleResisInputChange(exerciseIndex, 0, "weight", Number(text));
+            }}
+          />
         </View>
 
-{additionalSets === 0 && (
-  <View style={styles.addSetBtnWrapper}>
-    <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
-  </View>
-)}
+        {additionalSets === 0 && (
+          <View style={styles.addSetBtnWrapper}>
+            <CustomButton title="+ Add set +" variant="secondary" onPress={handleAddSet} />
+          </View>
+        )}
 
-        {
-          currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === 'resistance' &&
+        {currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type === "resistance" &&
           Array.from({ length: additionalSets }, (_, i) => i + 2).map((setNum, idx) => (
             <AdditionalSet
               key={idx}
@@ -120,13 +153,11 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
               // setLength={additionalSets}
               handleResisInputChange={handleResisInputChange}
             />
-          ))
-        }
+          ))}
       </View>
-      );
+    );
   }
-
-  }
+}
 
 const styles = StyleSheet.create({
   card: {
@@ -174,13 +205,12 @@ const styles = StyleSheet.create({
   hidden: {
     opacity: 0,
     pointerEvents: "none",
-    
   },
-  durationText:{
+  durationText: {
     alignContent: "center",
     transform: [{ translateY: 6 }],
   },
-  durationKey:{
+  durationKey: {
     textAlign: "center",
   },
   durationBox: {
@@ -190,6 +220,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 4,
     padding: 12,
+    marginBottom: 12,
   },
   inputCar: {
     borderWidth: 1,
@@ -198,5 +229,20 @@ const styles = StyleSheet.create({
     padding: 8,
     marginHorizontal: 4,
     maxWidth: 60,
+  },
+  addCarMetBtnWrapper: {
+    alignItems: "center",
+    margin: "auto",
+    marginVertical: 4,
+    flexDirection: "row",
+    gap: 16,
+  },
+  addCarMetBtn: {
+    marginLeft: 12,
+  },
+  picker: {
+    padding: 8,
+    textAlign: "center",
+    borderRadius: 4,
   },
 });
