@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import SessionCard from "./SessionCard";
 
@@ -13,6 +13,7 @@ import { exerciseTypeCheck } from "./exerciseTypeCheck";
 export default function Session() {
   const router = useRouter();
   const { currentWorkoutPlan, currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
+  const [sessionStarted, setSessionStarted] = useState<Date | null>(null);
 
   const handleSetUpWorkoutData = async () => {
     try {
@@ -85,6 +86,7 @@ const addSetToData = (exerciseNo: number) => {
 
   useEffect(() => {
     handleSetUpWorkoutData();
+    setSessionStarted(new Date());
   }, []);
 
   return (
@@ -99,6 +101,18 @@ const addSetToData = (exerciseNo: number) => {
         ))}
       </ScrollView>
       <View style={styles.footer}>
+        {sessionStarted && (
+          <Text style={styles.timeText}>
+            Started:{" "}
+            {sessionStarted.toLocaleTimeString([], {
+              hour: "2-digit",
+              minute: "2-digit",
+              hour12: true,
+            })}
+          </Text>
+        )}
+
+
         <CustomButton
           title="Finish Workout"
           onPress={() => {
@@ -134,7 +148,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     flexDirection: "row",
-    justifyContent: "flex-end",
+    justifyContent: "space-between" , 
     alignItems: "center",
     padding: 16,
     borderTopWidth: 1,
@@ -142,4 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f9f9f9",
   },
   finishBtn: {},
+  timeText: {
+    marginRight: 12,
+  },
 });

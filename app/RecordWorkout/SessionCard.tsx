@@ -57,6 +57,7 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
       <View style={styles.card}>
         <View style={styles.header}>
           <Text style={styles.cardTitle}>{exerciseName}</Text>
+          <Text>Cardio</Text>
         </View>
 
         <View style={styles.durationBox}>
@@ -78,13 +79,14 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
       </View>
       );
   }
+  
 
     if (exType === "resistance") {
     return (
       <View style={styles.card}>
         <View style={styles.header}>
           <Text style={styles.cardTitle}>{exerciseName}</Text>
-          <Text>Set 1</Text>
+          <Text>Resistance</Text>
         </View>
 
         <View style={styles.set}>

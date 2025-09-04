@@ -16,6 +16,9 @@ interface AppStore {
   setExercises: (exercises: Exercise[]) => void;
   setLoading: (loading: boolean) => void;
 
+  sessionStart: Date
+  setSessionStart: (sessionStart: Date) => void;
+
 }
 
 export const planPlaceholder: WorkoutPlan = {
@@ -62,6 +65,9 @@ const useAppStore = create<AppStore>((set) => ({
   setExercise: (currentExercise: Exercise) => set({ currentExercise }),
   setExercises: (exercises: Exercise[]) => set({ exercises }),
   setLoading: (loading: boolean) => set({ loading }),
+
+  sessionStart: new Date(),
+  setSessionStart: (date: Date) => set({ sessionStart: date })
 }));
 
 export default useAppStore;
