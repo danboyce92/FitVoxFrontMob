@@ -17,6 +17,7 @@ interface CardType {
 export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet }: CardType) {
   const [additionalSets, setAdditionalSets] = useState(0);
   const [selectedCardioMetric, setSelectedCardioMetric] = useState("Add Metric");
+  const [addedMetrics, setAddedMetrics] = useState<string[]>([]);
   const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
 
   const exType = currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type;
@@ -55,6 +56,11 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
     );
   };
 
+  const addCardioMetric = (newMetric: string) => {
+    if (newMetric === "Add Metric") return;
+    setAddedMetrics((prev) => [...prev, newMetric]);
+  };
+
   useEffect(() => {
     updateSetsAmount();
   }, [currentWorkoutRecord]);
@@ -68,7 +74,7 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
         </View>
 
         <View style={styles.durationBox}>
-          <Text style={styles.durationText}>Duration:</Text>
+          <Text style={styles.metricText}>Duration:</Text>
           <View>
             <Text style={styles.durationKey}>
               <i>Min</i>
@@ -83,21 +89,28 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
           </View>
         </View>
 
+        {addedMetrics.length > 0 &&
+          addedMetrics.map((metric, i) => (
+            <View style={styles.metricBox}>
+              <Text style={styles.metricText}>{metric}:</Text>
+            </View>
+          ))}
+
         <View style={styles.addCarMetBtnWrapper}>
           <Picker
             selectedValue={selectedCardioMetric}
             onValueChange={(itemValue) => setSelectedCardioMetric(itemValue)}
             style={styles.picker}
           >
-            <Picker.Item label="Distance" value="distance" />
-            <Picker.Item label="Incline" value="incline" />
-            <Picker.Item label="Calories" value="calories" />
+            <Picker.Item label="Distance" value="Distance" />
+            <Picker.Item label="Incline" value="Incline" />
+            <Picker.Item label="Calories" value="Calories" />
           </Picker>
           <CustomButton
             title="Add metric"
             variant="secondary"
             onPress={() => {
-              console.log("PLACEHOLDER");
+              addCardioMetric(selectedCardioMetric);
             }}
           />
         </View>
@@ -244,5 +257,17 @@ const styles = StyleSheet.create({
     padding: 8,
     textAlign: "center",
     borderRadius: 4,
+  },
+  metricBox: {
+    flexDirection: "row",
+    margin: "auto",
+    borderColor: "rgba(0, 0, 0, .2)",
+    borderWidth: 1,
+    borderRadius: 4,
+    padding: 12,
+    marginBottom: 12,
+  },
+  metricText: {
+    alignContent: "center",
   },
 });

@@ -74,3 +74,12 @@ Do some more testing before moving on
 ## 30-08
 Abstract resistance methods to their own file. 
 Start looking at how I should structure cardio exercises.
+
+## 04-09
+Now focusing on adding the dropdown for cardio metrics.
+Wire up button to add additional metric when pushed. ( Will require a map for additional metrics )
+Will need to be placed in a useEffect to update when a metric is added, only question is how to trigger it?
+Eventually create an array of additional metrics and place in each cardio exercise, when a cardio exercise is chosen, load up the specific metrics inside the appStore and have them populate the dropdown
+
+Questions :
+    Should I create an array of Cardio metrics and allow all to appear in dropdowns for every exercise or create an array in each exercise that pairs appropriate metrics to specific exercises?
