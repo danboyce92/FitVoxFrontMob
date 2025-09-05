@@ -6,8 +6,8 @@ const WORKOUTRECORDS = "workout-records";
 const WORKOUTPLANS = "workout-plans";
 const EXERCISES = "exercises";
 
-const API_URL = "http://192.168.1.223:5678/";
-// const API_URL = "http://localhost:5678/";
+// const API_URL = "http://192.168.1.223:5678/";
+const API_URL = "http://localhost:5678/";
 
 export const getWorkoutPlan = async (id: number) => {
   try {

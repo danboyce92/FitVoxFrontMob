@@ -83,3 +83,9 @@ Eventually create an array of additional metrics and place in each cardio exerci
 
 Questions :
     Should I create an array of Cardio metrics and allow all to appear in dropdowns for every exercise or create an array in each exercise that pairs appropriate metrics to specific exercises?
+
+
+## 05-09
+Cardio card functionality working well. Can add metrics, remove them. Some error messaging in place. They have specific measurements e.g distance has Km, calories has cal.
+
+Next need to wire this up with the API so it can save them to the db correctly

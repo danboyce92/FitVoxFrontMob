@@ -18,6 +18,7 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
   const [additionalSets, setAdditionalSets] = useState(0);
   const [selectedCardioMetric, setSelectedCardioMetric] = useState("Add Metric");
   const [addedMetrics, setAddedMetrics] = useState<string[]>([]);
+  const [errorMsg, setErrorMsg] = useState("");
   const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
 
   const exType = currentWorkoutRecord?.exerciseRecords[exerciseIndex]?.type;
@@ -57,13 +58,39 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
   };
 
   const addCardioMetric = (newMetric: string) => {
-    if (newMetric === "Add Metric") return;
+    if (addedMetrics.includes(newMetric)) {
+      setErrorMsg(`Error: ${newMetric} already added`);
+      return;
+    };
+
+
     setAddedMetrics((prev) => [...prev, newMetric]);
   };
+
+  const removeCardioMetric = (metric: string) => {
+    setAddedMetrics((prev) => prev.filter((m) => m !== metric));
+  }
+
+  const generateMetricMeasurement = (metric: string) => {
+    if (metric === "Distance") return "Km";
+    if (metric === "Calories") return "Cal";
+    if (metric === "Incline") return "In";
+
+  }
 
   useEffect(() => {
     updateSetsAmount();
   }, [currentWorkoutRecord]);
+
+  useEffect(() => {
+  if (errorMsg) {
+    const timeout = setTimeout(() => {
+      setErrorMsg("");
+    }, 3000);
+
+    return () => clearTimeout(timeout);
+  }
+}, [errorMsg]);
 
   if (exType === "cardio") {
     return (
@@ -74,7 +101,7 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
         </View>
 
         <View style={styles.durationBox}>
-          <Text style={styles.metricText}>Duration:</Text>
+          <Text style={styles.durationText}>Duration:</Text>
           <View>
             <Text style={styles.durationKey}>
               <i>Min</i>
@@ -93,6 +120,11 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
           addedMetrics.map((metric, i) => (
             <View style={styles.metricBox}>
               <Text style={styles.metricText}>{metric}:</Text>
+              <View style={styles.metricInputCont}>
+                <Text style={styles.metricMeas}>{generateMetricMeasurement(metric)}</Text>
+                <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} />
+              </View>
+              <Text style={styles.removeMetricBtn} onPress={() => {removeCardioMetric(metric)}}>X</Text>
             </View>
           ))}
 
@@ -102,18 +134,24 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
             onValueChange={(itemValue) => setSelectedCardioMetric(itemValue)}
             style={styles.picker}
           >
+            <Picker.Item label="Add Metric" value="Add Metric" />
             <Picker.Item label="Distance" value="Distance" />
             <Picker.Item label="Incline" value="Incline" />
             <Picker.Item label="Calories" value="Calories" />
           </Picker>
-          <CustomButton
-            title="Add metric"
-            variant="secondary"
-            onPress={() => {
-              addCardioMetric(selectedCardioMetric);
-            }}
-          />
+
+          { selectedCardioMetric !== "Add Metric" &&
+            <CustomButton
+              title="Add metric"
+              variant="secondary"
+              onPress={() => {
+                addCardioMetric(selectedCardioMetric);
+              }}
+            />
+          }
+          
         </View>
+        <Text style={styles.errorMsg}>{errorMsg}</Text>
       </View>
     );
   }
@@ -242,6 +280,7 @@ const styles = StyleSheet.create({
     padding: 8,
     marginHorizontal: 4,
     maxWidth: 60,
+    textAlign: "center",
   },
   addCarMetBtnWrapper: {
     alignItems: "center",
@@ -267,7 +306,31 @@ const styles = StyleSheet.create({
     padding: 12,
     marginBottom: 12,
   },
+  metricInputCont: {
+    flexDirection: "column",
+  },
+  metricMeas: {
+    textAlign: "center",
+    fontStyle: "italic",
+  },
   metricText: {
     alignContent: "center",
+    transform: [{ translateY: 6 }],
+  },
+  removeMetricBtn: {
+    color: "red",
+    borderWidth: 1,
+    borderColor: "red",
+    borderRadius: 4,
+    paddingHorizontal: 2,
+    margin: "auto",
+    marginLeft: 4,
+    transform: [{ translateY: -24 }],
+    cursor: "click",
+
+  },
+  errorMsg: {
+    color: "red",
+    fontStyle: "italic",
   },
 });
