@@ -7,7 +7,7 @@ import SessionCard from "./SessionCard";
 import { createWorkoutRecord, getAllWorkoutRecords } from "@/app/api";
 import CustomButton from "@/components/CustomButton";
 import useAppStore from "@/store/useAppStore";
-import { ExerciseRecord, WorkoutRecord } from "@/types/types";
+import { CardioMetrics, ExerciseRecord, WorkoutRecord } from "@/types/types";
 
 export default function Session() {
   const router = useRouter();
@@ -62,6 +62,36 @@ export default function Session() {
     };
     setCurrentWorkoutRecord(updatedRecord);
   };
+
+  const handleCardioInputChange = (
+    exerciseNo: number,
+    metric: keyof CardioMetrics,
+    value: number
+  ) => {
+    if (!currentWorkoutRecord) return;
+
+    const updatedRecord: WorkoutRecord = {
+      ...currentWorkoutRecord,
+      exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+        if (exercise.type === "cardio" && i === exerciseNo) {
+          return {
+            ...exercise,
+            specific: {
+              metrics: {
+                ...exercise.specific.metrics,
+                [metric]: value,
+              },
+            },
+          };
+        }
+
+        return exercise;
+      }),
+    };
+
+    setCurrentWorkoutRecord(updatedRecord);
+  };
+  
 
   const addSetToData = (exerciseNo: number) => {
     if (!currentWorkoutRecord) return;

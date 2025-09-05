@@ -81,11 +81,16 @@ Wire up button to add additional metric when pushed. ( Will require a map for ad
 Will need to be placed in a useEffect to update when a metric is added, only question is how to trigger it?
 Eventually create an array of additional metrics and place in each cardio exercise, when a cardio exercise is chosen, load up the specific metrics inside the appStore and have them populate the dropdown
 
-Questions :
-    Should I create an array of Cardio metrics and allow all to appear in dropdowns for every exercise or create an array in each exercise that pairs appropriate metrics to specific exercises?
-
-
 ## 05-09
 Cardio card functionality working well. Can add metrics, remove them. Some error messaging in place. They have specific measurements e.g distance has Km, calories has cal.
 
 Next need to wire this up with the API so it can save them to the db correctly
+
+handleCardioInputChange has been created in Session component. Make sure it works.
+First though, create the two methods addCardioMetric and removeCardioMetric so the currentWorkoutRecord is always up to date
+
+
+# Questions
+Should I create an array of Cardio metrics and allow all to appear in dropdowns for every exercise or create an array in each exercise that pairs appropriate metrics to specific exercises?
+
+I think currentWorkoutMethod might not be needed to be initialised in the zustand store. It seems like it is only needed in the Session Component and the SessionCard component ( Possibly the additional sets component too ) The point being they can be passed down as props to lower bloating in the store.

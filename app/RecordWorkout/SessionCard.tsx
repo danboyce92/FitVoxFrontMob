@@ -60,37 +60,36 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
   const addCardioMetric = (newMetric: string) => {
     if (addedMetrics.includes(newMetric)) {
       setErrorMsg(`Error: ${newMetric} already added`);
-      return;
-    };
 
+      return;
+    }
 
     setAddedMetrics((prev) => [...prev, newMetric]);
   };
 
   const removeCardioMetric = (metric: string) => {
     setAddedMetrics((prev) => prev.filter((m) => m !== metric));
-  }
+  };
 
   const generateMetricMeasurement = (metric: string) => {
     if (metric === "Distance") return "Km";
     if (metric === "Calories") return "Cal";
     if (metric === "Incline") return "In";
-
-  }
+  };
 
   useEffect(() => {
     updateSetsAmount();
   }, [currentWorkoutRecord]);
 
   useEffect(() => {
-  if (errorMsg) {
-    const timeout = setTimeout(() => {
-      setErrorMsg("");
-    }, 3000);
+    if (errorMsg) {
+      const timeout = setTimeout(() => {
+        setErrorMsg("");
+      }, 3000);
 
-    return () => clearTimeout(timeout);
-  }
-}, [errorMsg]);
+      return () => clearTimeout(timeout);
+    }
+  }, [errorMsg]);
 
   if (exType === "cardio") {
     return (
@@ -124,7 +123,14 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
                 <Text style={styles.metricMeas}>{generateMetricMeasurement(metric)}</Text>
                 <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} />
               </View>
-              <Text style={styles.removeMetricBtn} onPress={() => {removeCardioMetric(metric)}}>X</Text>
+              <Text
+                style={styles.removeMetricBtn}
+                onPress={() => {
+                  removeCardioMetric(metric);
+                }}
+              >
+                X
+              </Text>
             </View>
           ))}
 
@@ -140,7 +146,7 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
             <Picker.Item label="Calories" value="Calories" />
           </Picker>
 
-          { selectedCardioMetric !== "Add Metric" &&
+          {selectedCardioMetric !== "Add Metric" && (
             <CustomButton
               title="Add metric"
               variant="secondary"
@@ -148,8 +154,7 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
                 addCardioMetric(selectedCardioMetric);
               }}
             />
-          }
-          
+          )}
         </View>
         <Text style={styles.errorMsg}>{errorMsg}</Text>
       </View>
@@ -327,7 +332,6 @@ const styles = StyleSheet.create({
     marginLeft: 4,
     transform: [{ translateY: -24 }],
     cursor: "click",
-
   },
   errorMsg: {
     color: "red",

@@ -13,10 +13,9 @@ export const exerciseTypeCheck = (exercise: Exercise) => {
       id: exercise.id,
       name: exercise.name,
       type: "cardio",
+      duration: 0,
       specific: {
-        metrics: {
-          durationMinutes: 0,
-        },
+        metrics: {},
       },
     } satisfies CardioExerciseRecord;
   }

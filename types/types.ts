@@ -42,13 +42,13 @@ export interface ResistanceExerciseRecord extends BaseExercise {
 
 export interface CardioExerciseRecord extends BaseExercise {
   type: "cardio";
+  duration: number; // in ms
   specific: {
     metrics: CardioMetrics;
   };
 }
 
 export interface CardioMetrics {
-  durationMinutes: number;
   distanceKm?: number;
   caloriesBurned?: number;
   speedKmh?: number;
