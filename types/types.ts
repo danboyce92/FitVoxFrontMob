@@ -49,6 +49,10 @@ export interface CardioExerciseRecord extends BaseExercise {
 }
 
 export interface CardioMetrics {
+  Distance?: number;
+  Calories?: number;
+  Incline?: number;
+
   distanceKm?: number;
   caloriesBurned?: number;
   speedKmh?: number;

@@ -89,6 +89,9 @@ Next need to wire this up with the API so it can save them to the db correctly
 handleCardioInputChange has been created in Session component. Make sure it works.
 First though, create the two methods addCardioMetric and removeCardioMetric so the currentWorkoutRecord is always up to date
 
+## 06-09
+Currently finished implementing all methods for Cardio functionality except for updating the value of duration
+Need to consider how best to calculate the minutes and seconds values. Should I keep the value in miliseconds?
 
 # Questions
 Should I create an array of Cardio metrics and allow all to appear in dropdowns for every exercise or create an array in each exercise that pairs appropriate metrics to specific exercises?

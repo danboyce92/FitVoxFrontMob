@@ -63,6 +63,24 @@ export default function Session() {
     setCurrentWorkoutRecord(updatedRecord);
   };
 
+  const handleCardioDurationChange = (exerciseNo: number, value: number) => {
+    if (!currentWorkoutRecord) return;
+
+        const updatedRecord: WorkoutRecord = {
+        ...currentWorkoutRecord,
+        exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+          if (exercise.type === "cardio" && i === exerciseNo) {
+            return {
+              ...exercise,
+              duration: value
+            }
+          }
+          return exercise
+        })
+      }
+    setCurrentWorkoutRecord(updatedRecord);
+  }
+
   const handleCardioInputChange = (
     exerciseNo: number,
     metric: keyof CardioMetrics,
@@ -91,7 +109,66 @@ export default function Session() {
 
     setCurrentWorkoutRecord(updatedRecord);
   };
-  
+
+const addCardioMetricToData = (
+  exerciseNo: number,
+  metric: keyof CardioMetrics
+) => {
+  if (!currentWorkoutRecord) return;
+
+  const updatedRecord: WorkoutRecord = {
+    ...currentWorkoutRecord,
+    exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+      if (exercise.type === "cardio" && i === exerciseNo) {
+        // Add metric only if it doesn't exist
+        const updatedMetrics = {
+          ...exercise.specific.metrics,
+          [metric]: exercise.specific.metrics[metric] ?? 0, // Default to 0
+        };
+
+        return {
+          ...exercise,
+          specific: {
+            ...exercise.specific,
+            metrics: updatedMetrics,
+          },
+        };
+      }
+
+      return exercise;
+    }),
+  };
+
+  setCurrentWorkoutRecord(updatedRecord);
+};
+
+const removeCardioMetricFromData = (
+  exerciseNo: number,
+  metric: keyof CardioMetrics
+) => {
+  if (!currentWorkoutRecord) return;
+
+  const updatedRecord: WorkoutRecord = {
+    ...currentWorkoutRecord,
+    exerciseRecords: currentWorkoutRecord.exerciseRecords.map((exercise, i) => {
+      if (exercise.type === "cardio" && i === exerciseNo) {
+        const { [metric]: _, ...restMetrics } = exercise.specific.metrics;
+
+        return {
+          ...exercise,
+          specific: {
+            ...exercise.specific,
+            metrics: restMetrics,
+          },
+        };
+      }
+
+      return exercise;
+    }),
+  };
+
+  setCurrentWorkoutRecord(updatedRecord);
+};
 
   const addSetToData = (exerciseNo: number) => {
     if (!currentWorkoutRecord) return;
@@ -129,6 +206,10 @@ export default function Session() {
             exerciseName={currentWorkoutPlan.exercises[index].name}
             handleResisInputChange={handleResisInputChange}
             addSet={addSetToData}
+            addMetric={addCardioMetricToData}
+            removeMetric={removeCardioMetricFromData}
+            handleCardioDurationChange={handleCardioDurationChange}
+            handleCardioInputChange={handleCardioInputChange}
           />
         ))}
       </ScrollView>

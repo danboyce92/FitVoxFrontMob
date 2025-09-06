@@ -5,19 +5,23 @@ import AdditionalSet from "./AdditionalSet";
 
 import CustomButton from "@/components/CustomButton";
 import useAppStore from "@/store/useAppStore";
-import { WorkoutRecord } from "@/types/types";
+import { CardioMetrics, WorkoutRecord } from "@/types/types";
 
 interface CardType {
   exerciseName: string;
   exerciseIndex: number;
   handleResisInputChange: (exerciseNo: number, setNo: number, property: "reps" | "weight", value: number) => void;
   addSet: (exerciseNo: number) => void;
+  addMetric: (exerciseNo: number, metric: keyof CardioMetrics) => void;
+  removeMetric: (exerciseNo: number, metric: keyof CardioMetrics) => void;
+  handleCardioDurationChange: (exerciseNo: number, value: number) => void;
+  handleCardioInputChange: (exerciseNo: number, metric: keyof CardioMetrics, value: number) => void;
 }
 
-export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet }: CardType) {
+export default function SessionCard({ exerciseName, exerciseIndex, handleResisInputChange, addSet, addMetric, removeMetric, handleCardioDurationChange, handleCardioInputChange }: CardType) {
   const [additionalSets, setAdditionalSets] = useState(0);
-  const [selectedCardioMetric, setSelectedCardioMetric] = useState("Add Metric");
-  const [addedMetrics, setAddedMetrics] = useState<string[]>([]);
+  const [selectedCardioMetric, setSelectedCardioMetric] = useState<keyof CardioMetrics | "Add Metric">("Add Metric");
+  const [addedMetrics, setAddedMetrics] = useState<Array<keyof CardioMetrics>>([]);
   const [errorMsg, setErrorMsg] = useState("");
   const { currentWorkoutRecord, setCurrentWorkoutRecord } = useAppStore();
 
@@ -57,21 +61,22 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
     );
   };
 
-  const addCardioMetric = (newMetric: string) => {
+  const addCardioMetric = (newMetric: keyof CardioMetrics) => {
     if (addedMetrics.includes(newMetric)) {
       setErrorMsg(`Error: ${newMetric} already added`);
 
       return;
     }
-
+    addMetric(exerciseIndex, newMetric);
     setAddedMetrics((prev) => [...prev, newMetric]);
   };
 
-  const removeCardioMetric = (metric: string) => {
+  const removeCardioMetric = (metric: keyof CardioMetrics) => {
+    removeMetric(exerciseIndex, metric);
     setAddedMetrics((prev) => prev.filter((m) => m !== metric));
   };
 
-  const generateMetricMeasurement = (metric: string) => {
+  const generateMetricMeasurement = (metric: keyof CardioMetrics) => {
     if (metric === "Distance") return "Km";
     if (metric === "Calories") return "Cal";
     if (metric === "Incline") return "In";
@@ -121,7 +126,9 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
               <Text style={styles.metricText}>{metric}:</Text>
               <View style={styles.metricInputCont}>
                 <Text style={styles.metricMeas}>{generateMetricMeasurement(metric)}</Text>
-                <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} />
+                <TextInput keyboardType="numeric" placeholder="0" style={styles.inputCar} onChangeText={(text) => {
+                  handleCardioInputChange(exerciseIndex, metric, Number(text));
+                }} />
               </View>
               <Text
                 style={styles.removeMetricBtn}
@@ -137,7 +144,9 @@ export default function SessionCard({ exerciseName, exerciseIndex, handleResisIn
         <View style={styles.addCarMetBtnWrapper}>
           <Picker
             selectedValue={selectedCardioMetric}
-            onValueChange={(itemValue) => setSelectedCardioMetric(itemValue)}
+            onValueChange={(itemValue) =>
+              setSelectedCardioMetric(itemValue as keyof CardioMetrics | "Add Metric")
+            }
             style={styles.picker}
           >
             <Picker.Item label="Add Metric" value="Add Metric" />
