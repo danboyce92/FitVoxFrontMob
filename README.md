@@ -2,6 +2,26 @@
 Fitness Tracker App, Frontend Mobile using React-Native
 
 
+## App Structure
+Split this app into three sections
+**Template Builder**
+**Record Session**
+**Progress Tab**
+
+#### Template Builder
+This section's primary focus is to allow the user to create a workout template. <br/> 
+They will give the workout a name for example "Leg Day". <br/>
+Then a user will add however many exercises to that template, either chosen from the stored list of exercises or custom input (to be added later).
+
+#### Record Session
+This section allows a user to work through the exercises from the template, adding any additional information specific to this workout session like how many sets of a particular exercise you did or what weight you used.
+
+#### Progress Tab
+This section is open for consideration. <br/>
+At present, this section's aim is to take the user's information and generate graphs or charts with it to visualise a users progress. <br/>
+Lots can be added, setting goals, weekly quotas. And possibly most ambitious of all, a social aspect to it. Users can see each friend's entries like strava or something similar.
+
+
 ## Future additions
 **Template Builder**
 A search bar in the list of exercises that filters for what is entered
