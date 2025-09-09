@@ -18,7 +18,7 @@ This section allows a user to work through the exercises from the template, addi
 
 #### Progress Tab
 This section is open for consideration. <br/>
-At present, this section's aim is to take the user's information and generate graphs or charts with it to visualise a users progress. <br/>
+At present, this section's aim is to take the user's information and generate graphs or charts with it to visualise a user's progress. <br/>
 Lots can be added, setting goals, weekly quotas. And possibly most ambitious of all, a social aspect to it. Users can see each friend's entries like strava or something similar.
 
 
