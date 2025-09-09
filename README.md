@@ -3,10 +3,10 @@ Fitness Tracker App, Frontend Mobile using React-Native
 
 
 ## App Structure
-Split this app into three sections
-**Template Builder**
-**Record Session**
-**Progress Tab**
+Split this app into three sections : <br/> 
+**Template Builder** <br/> 
+**Record Session** <br/> 
+**Progress Tab** <br/> 
 
 #### Template Builder
 This section's primary focus is to allow the user to create a workout template. <br/> 
